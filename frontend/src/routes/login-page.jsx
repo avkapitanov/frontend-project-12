@@ -1,11 +1,23 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
 export default function LoginPage() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const usernameInputRef = useRef();
+  const [authError, setAuthError] = useState('');
+
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required('Required'),
     password: Yup.string().required('Required'),
   });
+
+  useEffect(() => {
+    usernameInputRef.current.focus();
+  }, []);
 
   return (
     <div className="container-fluid h-100">
@@ -17,11 +29,16 @@ export default function LoginPage() {
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={LoginSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                  }, 400);
+                onSubmit={async (values) => {
+                  setAuthError(false);
+                  try {
+                    await auth.logIn(values);
+                    navigate('/');
+                  } catch ({ response }) {
+                    const errMsg = (response.status === 401)
+                      ? 'Ошибка авторизации' : 'Ошибка сети';
+                    setAuthError(errMsg);
+                  }
                 }}
               >
                 {({
@@ -34,6 +51,7 @@ export default function LoginPage() {
                     isSubmitting,
                   }) => (
                   <Form onSubmit={handleSubmit}>
+                    {authError ? <div className="text-danger">{authError}</div> : null}
                     <div className="mb-3">
                       <label className="form-label" htmlFor="username-field">
                         Username
@@ -41,6 +59,7 @@ export default function LoginPage() {
                       <Field className="form-control" type="text" id="username-field" name="username" placeholder="Username"
                              onChange={handleChange}
                              onBlur={handleBlur}
+                             innerRef={usernameInputRef}
                              value={values.username}
                       />
 

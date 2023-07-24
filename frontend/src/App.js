@@ -1,16 +1,29 @@
 import {
-  createBrowserRouter,
+  createBrowserRouter, Navigate,
   RouterProvider,
 } from "react-router-dom";
 
 import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import LoginPage from './routes/login-page';
+import AuthProvider from './providers/AuthProvider';
+import { useAuth } from './hooks/useAuth';
+
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    auth.username ? children : <Navigate to='/login' />
+  );
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element:
+      <PrivateRoute>
+        <Root />
+      </PrivateRoute>,
     errorElement: <ErrorPage />,
   },
   {
@@ -21,7 +34,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <AuthProvider>
+     <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 
