@@ -8,6 +8,7 @@ import ErrorPage from './routes/error-page';
 import LoginPage from './routes/login-page';
 import AuthProvider from './providers/AuthProvider';
 import { useAuth } from './hooks/useAuth';
+import routes from './routes';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
@@ -19,7 +20,7 @@ const PrivateRoute = ({ children }) => {
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: routes.rootPath(),
     element:
       <PrivateRoute>
         <Root />
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
+    path: routes.loginPath(),
     element: <LoginPage />,
   },
 ]);
