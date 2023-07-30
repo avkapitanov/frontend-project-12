@@ -1,4 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+
+const messagesAdapter = createEntityAdapter();
 
 const initialState = {
   ids: [],
@@ -9,19 +11,15 @@ const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    setMessages(state, action) {
-      const { entities, ids } = action.payload;
-      state.entities = entities;
-      state.ids = ids;
-    },
-    addMessage(state, action) {
-      const { message } = action.payload;
-      state.entities[message.id] = message;
-      state.ids.push(message.id);
-    },
+    setMessages: messagesAdapter.addMany,
+    addMessage: messagesAdapter.addOne,
   },
 });
 
 export const { setMessages, addMessage } = messagesSlice.actions;
+
+export const {
+  selectAll: selectAllMessages
+} = messagesAdapter.getSelectors(state => state.messages)
 
 export default messagesSlice.reducer;

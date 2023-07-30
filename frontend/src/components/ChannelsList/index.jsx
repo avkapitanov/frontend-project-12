@@ -7,7 +7,7 @@ import Channel from '../Channel';
 
 const ChannelsList = () => {
 
-  const channels = useSelector(state => selectAllChannels(state));
+  const channels = useSelector(selectAllChannels);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   return (

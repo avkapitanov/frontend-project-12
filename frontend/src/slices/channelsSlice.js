@@ -40,6 +40,7 @@ const channelsSlice = createSlice({
 
 export const {
   selectAll: selectAllChannels,
+  selectById: selectChannelById
 } = channelsAdapter.getSelectors(state => state.channels)
 
 export const { actions } = channelsSlice;
