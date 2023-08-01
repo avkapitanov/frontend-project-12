@@ -1,20 +1,29 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../hooks/useAuth';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import routes from '../routes';
+import axios from 'axios';
+import signupImage from '../assets/signup.jpg';
 
-import loginImage from '../assets/login.jpg';
-
-export default function LoginPage() {
+export default function SignupPage() {
   const auth = useAuth();
   const navigate = useNavigate();
   const usernameInputRef = useRef();
-  const [authError, setAuthError] = useState('');
+  const [signupError, setSignupFailed] = useState(false);
 
-  const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('Required'),
-    password: Yup.string().required('Required'),
+  const signupSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов')
+      .required('Обязательтное поле'),
+    password: Yup.string()
+      .min(6, 'Не менее 6 символов')
+      .required('Обязательтное поле'),
+    passwordConfirmation: Yup.string()
+      .required('Обязательтное поле')
+      .oneOf([Yup.ref('password'), null], 'Пароли не совпадают'),
   });
 
   useEffect(() => {
@@ -29,24 +38,37 @@ export default function LoginPage() {
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img
-                  src={loginImage}
+                  src={signupImage}
                   className="rounded-circle"
                   alt=""
                 />
               </div>
-              <h1 className="text-center mb-4">Login</h1>
+              <h1 className="text-center mb-4">Signup</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
-                validationSchema={LoginSchema}
-                onSubmit={async (values) => {
-                  setAuthError(false);
+                validationSchema={signupSchema}
+                onSubmit={async ({ username, password }, actions) => {
+                  setSignupFailed(false);
+
                   try {
-                    await auth.logIn(values);
-                    navigate('/');
-                  } catch ({ response }) {
-                    const errMsg = (response.status === 401)
-                      ? 'Ошибка авторизации' : 'Ошибка сети';
-                    setAuthError(errMsg);
+                    const res = await axios.post(
+                      routes.api.signUpPath(),
+                      { username: username, password: password },
+                    );
+                    auth.authorize(res.data);
+                    navigate(routes.rootPath());
+                  } catch (err) {
+                    if (!err.isAxiosError) {
+                      throw err;
+                    }
+
+                    if (err.response.status === 409) {
+                      setSignupFailed(true);
+                      usernameInputRef.current.select();
+                      return;
+                    }
+
+                    throw err;
                   }
                 }}
               >
@@ -60,7 +82,6 @@ export default function LoginPage() {
                     isSubmitting,
                   }) => (
                   <Form onSubmit={handleSubmit}>
-                    {authError ? <div className="text-danger">{authError}</div> : null}
                     <div className="mb-3">
                       <label className="form-label" htmlFor="username-field">
                         Username
@@ -83,22 +104,30 @@ export default function LoginPage() {
                              onBlur={handleBlur}
                              value={values.password}
                       />
-
                       {errors.password && touched.password && <ErrorMessage className="text-danger" name="password" component="div" />}
                     </div>
+                    <div className="mb-3">
+                      <label className="form-label" htmlFor="password-confirmation-field">
+                        Password Confirmation
+                      </label>
+                      <Field className="form-control" type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder="Password"
+                             onChange={handleChange}
+                             onBlur={handleBlur}
+                             value={values.passwordConfirmation}
+                      />
+
+                      {errors.passwordConfirmation && touched.passwordConfirmation && <ErrorMessage className="text-danger" name="passwordConfirmation" component="div" />}
+                    </div>
+
+                      {signupError && <Form.Control.Feedback type="invalid" tooltip>
+                        Пользователь уже существует
+                      </Form.Control.Feedback>}
                     <button className="btn btn-outline-primary" type="submit" disabled={isSubmitting}>
                       Submit
                     </button>
                   </Form>
                 )}
               </Formik>
-            </div>
-            <div className="card-footer p-4">
-              <div className="text-center">
-                <span>Нет аккаунта?</span>
-                {' '}
-                <Link to="/signup">Регистрация</Link>
-              </div>
             </div>
           </div>
         </div>

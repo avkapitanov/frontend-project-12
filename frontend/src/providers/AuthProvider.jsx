@@ -7,18 +7,29 @@ const AuthProvider = ({ children }) => {
   const savedUsername = localStorage.getItem('username');
   const [username, setUsername] = useState(savedUsername);
 
-  const logIn = async (logInData) => {
-    const { data } = await axios.post(routes.api.loginPath(), logInData);
+  const authorize = (data) => {
+    debugger
     const { username, token } = data;
     localStorage.setItem('username', username);
     localStorage.setItem('token', token);
     setUsername(username);
   };
 
+  const logIn = async (logInData) => {
+    const { data } = await axios.post(routes.api.loginPath(), logInData);
+    authorize(data);
+  };
+
+  const logOut = () => {
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
+    setUsername('');
+  };
+
   const getToken = () => localStorage.getItem('token');
 
   return (
-    <AuthContext.Provider value={{logIn, username, getToken}}>
+    <AuthContext.Provider value={{logIn, username, getToken, authorize, logOut}}>
       {children}
     </AuthContext.Provider>
   );

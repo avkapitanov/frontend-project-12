@@ -9,6 +9,8 @@ import LoginPage from './routes/login-page';
 import AuthProvider from './providers/AuthProvider';
 import { useAuth } from './hooks/useAuth';
 import routes from './routes';
+import SignupPage from './routes/signup-page';
+import Layout from './components/Layout';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
@@ -20,16 +22,29 @@ const PrivateRoute = ({ children }) => {
 
 const router = createBrowserRouter([
   {
-    path: routes.rootPath(),
-    element:
-      <PrivateRoute>
-        <Root />
-      </PrivateRoute>,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: routes.loginPath(),
-    element: <LoginPage />,
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <PrivateRoute>
+          <Root />
+        </PrivateRoute> },
+      {
+        path: routes.rootPath(),
+        element:
+          <PrivateRoute>
+            <Root />
+          </PrivateRoute>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: routes.loginPath(),
+        element: <LoginPage />,
+      },
+      {
+        path: routes.signupPath(),
+        element: <SignupPage />,
+      },
+    ],
   },
 ]);
 
