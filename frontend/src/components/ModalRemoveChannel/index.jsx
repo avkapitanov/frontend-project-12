@@ -23,7 +23,6 @@ const ModalRemoveChannel = ({ handleClose }) => {
           initialValues={{}}
           onSubmit={async (values, actions) => {
             try {
-              debugger
               await removeChannel(channelId);
               handleClose();
               actions.setSubmitting(false);

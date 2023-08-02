@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useRef } from 'react';
 import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 const MessageForm = ({ channel }) => {
   const { t } = useTranslation();
@@ -23,8 +24,9 @@ const MessageForm = ({ channel }) => {
       }}
       validationSchema={MessageSchema}
       onSubmit={async ({ message }, actions) => {
+        const filteredMessage = leoProfanity.clean(message);
         const messageToSend = {
-          body: message,
+          body: filteredMessage,
           channelId: channel.id,
           username,
         };

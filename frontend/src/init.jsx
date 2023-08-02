@@ -10,6 +10,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import React from 'react';
 import AuthProvider from './providers/AuthProvider';
+import leoProfanity from 'leo-profanity';
 
 const init = async () => {
   await i18next
@@ -40,6 +41,9 @@ const init = async () => {
     const { id, name } = payload;
     store.dispatch(channelActions.updateChannel({ id, changes: { name } }));
   });
+
+  leoProfanity.add(leoProfanity.getDictionary('en'));
+  leoProfanity.add(leoProfanity.getDictionary('ru'));
 
   return (
     <Provider store={store}>

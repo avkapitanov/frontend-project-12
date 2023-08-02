@@ -9,6 +9,7 @@ import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -46,8 +47,10 @@ const ModalAddChannel = ({ handleClose }) => {
             }}
             validationSchema={ChannelSchema}
             onSubmit={async (values, actions) => {
+              const { name } = values;
+              const filteredName = leoProfanity.clean(name);
               const channel = {
-                name: values.name,
+                name: filteredName,
               };
               try {
                 await addNewChannel(channel);
