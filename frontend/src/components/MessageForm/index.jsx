@@ -55,7 +55,7 @@ const MessageForm = ({ channel }) => {
                    name="message"
                    aria-label={t('chat.message')}
                    placeholder={t('chat.enterMessage')}
-                   autocomplete="off"
+                   autoComplete="off"
                    disabled={isSubmitting}
                    onChange={handleChange}
                    onBlur={handleBlur}

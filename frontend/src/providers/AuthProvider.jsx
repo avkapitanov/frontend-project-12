@@ -8,7 +8,6 @@ const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(savedUsername);
 
   const authorize = (data) => {
-    debugger
     const { username, token } = data;
     localStorage.setItem('username', username);
     localStorage.setItem('token', token);

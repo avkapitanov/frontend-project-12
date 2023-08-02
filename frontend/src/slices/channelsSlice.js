@@ -3,10 +3,16 @@ import { getChannels } from '../api';
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchTasks',
-  async (token) => {
-    const { data } = await getChannels(token);
-
-    return data;
+  async (token, thunkAPI) => {
+    try {
+      const { data } = await getChannels(token);
+      return data;
+    } catch (error) {
+      if (error.isAxiosError) {
+        return thunkAPI.rejectWithValue(error.response);
+      }
+      throw error;
+    }
   },
 );
 
@@ -14,6 +20,7 @@ const channelsAdapter = createEntityAdapter();
 
 const initialState = channelsAdapter.getInitialState({
   currentChannelId: null,
+  loadingStatus: null,
 })
 
 const channelsSlice = createSlice({
@@ -34,6 +41,9 @@ const channelsSlice = createSlice({
         const { channels, currentChannelId } = action.payload;
         channelsAdapter.upsertMany(state, channels)
         state.currentChannelId = currentChannelId;
+      })
+      .addCase(fetchChannels.rejected, (state, { payload}) => {
+        state.loadingStatus = (payload?.status === 401) ? 'authError' : 'networkError';
       });
   },
 });

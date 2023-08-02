@@ -8,6 +8,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -52,6 +53,7 @@ const ModalAddChannel = ({ handleClose }) => {
                 await addNewChannel(channel);
                 handleClose();
                 actions.setSubmitting(false);
+                toast.success(t('modals.add.channelAdded'));
               } catch (error) {
                 actions.setSubmitting(false);
               }

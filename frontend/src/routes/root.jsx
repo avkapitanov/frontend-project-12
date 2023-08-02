@@ -8,6 +8,9 @@ import { selectAllMessages } from '../slices/messagesSlice';
 import Message from '../components/Message';
 import ModalWrapper from '../components/ModalWrapper';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import routes from '../routes';
+import { useNavigate } from 'react-router-dom';
 
 export default function Root() {
   const { t } = useTranslation();
@@ -15,22 +18,31 @@ export default function Root() {
   const auth = useAuth();
   const token = auth.getToken();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const channel = useSelector((state) => {
     const { currentChannelId } = state.channels;
     return selectChannelById(state, currentChannelId);
   });
   const messages = useSelector(selectAllMessages);
   const messagesByChannel = messages.filter((message) => channel.id === message.channelId);
+  const loadingStatus = useSelector((state) => state.channels.loadingStatus);
 
   useEffect(() => {
-    dispatch(fetchChannels(token))
-      .then(({ error }) => {
+    dispatch(fetchChannels(token));
+  }, [token]);
 
-      })
-      .catch(() => {
+  useEffect(() => {
+    if (loadingStatus === 'authError') {
+      auth.logOut();
+      navigate(routes.loginPath());
+      toast.error(t(`error.${loadingStatus}`));
+    }
 
-      });
-  }, []);
+    if (loadingStatus === 'failed') {
+      toast.error(t(`error.${loadingStatus}`));
+    }
+  }, [loadingStatus]);
+
   return (
     <>
       <div className="container h-100 my-4 overflow-hidden rounded shadow">

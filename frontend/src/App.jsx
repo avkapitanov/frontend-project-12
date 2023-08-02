@@ -10,6 +10,8 @@ import { useAuth } from './hooks/useAuth';
 import routes from './routes';
 import SignupPage from './routes/signup-page';
 import Layout from './components/Layout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
@@ -49,7 +51,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-     <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
   );
 }
 

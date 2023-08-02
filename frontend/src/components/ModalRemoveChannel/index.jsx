@@ -3,6 +3,7 @@ import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -19,11 +20,14 @@ const ModalRemoveChannel = ({ handleClose }) => {
       </ModalHeader>
       <ModalBody className="modal-body">
         <Formik
+          initialValues={{}}
           onSubmit={async (values, actions) => {
             try {
+              debugger
               await removeChannel(channelId);
               handleClose();
               actions.setSubmitting(false);
+              toast.success(t('modals.remove.channelRemoved'));
             } catch (error) {
               actions.setSubmitting(false);
             }
