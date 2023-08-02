@@ -5,8 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
 import loginImage from '../assets/login.jpg';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
+  const { t } = useTranslation();
+
   const auth = useAuth();
   const navigate = useNavigate();
   const usernameInputRef = useRef();
@@ -34,7 +37,7 @@ export default function LoginPage() {
                   alt=""
                 />
               </div>
-              <h1 className="text-center mb-4">Login</h1>
+              <h1 className="text-center mb-4">{t('login.title')}</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={LoginSchema}
@@ -45,7 +48,7 @@ export default function LoginPage() {
                     navigate('/');
                   } catch ({ response }) {
                     const errMsg = (response.status === 401)
-                      ? 'Ошибка авторизации' : 'Ошибка сети';
+                      ? t('login.authError') : t('login.networkError');
                     setAuthError(errMsg);
                   }
                 }}
@@ -60,12 +63,12 @@ export default function LoginPage() {
                     isSubmitting,
                   }) => (
                   <Form onSubmit={handleSubmit}>
-                    {authError ? <div className="text-danger">{authError}</div> : null}
+                    {authError ? <div className="text-danger">{t('login.authError')}</div> : null}
                     <div className="mb-3">
                       <label className="form-label" htmlFor="username-field">
-                        Username
+                        {t('login.username')}
                       </label>
-                      <Field className="form-control" type="text" id="username-field" name="username" placeholder="Username"
+                      <Field className="form-control" type="text" id="username-field" name="username" placeholder={t('login.username')}
                              onChange={handleChange}
                              onBlur={handleBlur}
                              innerRef={usernameInputRef}
@@ -76,9 +79,9 @@ export default function LoginPage() {
                     </div>
                     <div className="mb-3">
                       <label className="form-label" htmlFor="password-field">
-                        Password
+                        {t('login.password')}
                       </label>
-                      <Field className="form-control" type="password" id="password-field" name="password" placeholder="Password"
+                      <Field className="form-control" type="password" id="password-field" name="password" placeholder={t('login.password')}
                              onChange={handleChange}
                              onBlur={handleBlur}
                              value={values.password}
@@ -87,7 +90,7 @@ export default function LoginPage() {
                       {errors.password && touched.password && <ErrorMessage className="text-danger" name="password" component="div" />}
                     </div>
                     <button className="btn btn-outline-primary" type="submit" disabled={isSubmitting}>
-                      Submit
+                      {t('login.submit')}
                     </button>
                   </Form>
                 )}
@@ -95,9 +98,9 @@ export default function LoginPage() {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет аккаунта?</span>
+                <span>{t('login.haveNotAccount')}</span>
                 {' '}
-                <Link to="/signup">Регистрация</Link>
+                <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </div>
           </div>

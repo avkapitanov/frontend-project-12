@@ -1,16 +1,20 @@
 import { useRouteError } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import notfoundImage from '../assets/notfound.svg';
 
 export default function ErrorPage() {
+  const { t } = useTranslation();
+
   const error = useRouteError();
   console.error(error);
 
   return (
-    <div id="error-page" className="d-flex flex-column justify-content-center align-items-center min-vh-100">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
+    <div className="text-center">
+      <img alt={t('notFound.title')} className="img-fluid h-25"
+                                      src={notfoundImage} />
+        <h1 className="h4 text-muted">{t('notFound.title')}</h1>
+        <p className="text-muted">{t('notFound.text')} <a href="/">{t('notFound.linkText')}</a>
+        </p>
     </div>
-  );
+  )
 }

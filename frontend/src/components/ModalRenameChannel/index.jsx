@@ -7,8 +7,11 @@ import { useEffect, useRef } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
+import { useTranslation } from 'react-i18next';
 
 const ModalRenameChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
+
   const channels = useSelector(selectAllChannels);
   const channelId = useSelector((state) => state.modals.data?.channelId);
   const channel = useSelector((state) => selectChannelById(state, channelId));
@@ -23,10 +26,10 @@ const ModalRenameChannel = ({ handleClose }) => {
     name: yup
       .string()
       .trim()
-      .min(3, 'Минимум 3 символа')
-      .max(20, 'Максимум 20 символов')
-      .notOneOf(channels.map(({ name }) => name), 'Такой канал уже существует')
-      .required('Обязательно')
+      .min(3, t('modals.add.min'))
+      .max(20, t('modals.add.max'))
+      .notOneOf(channels.map(({ name }) => name), t('modals.add.alreadyExists'))
+      .required(t('modals.add.requiredField'))
   });
 
   return (
@@ -34,7 +37,7 @@ const ModalRenameChannel = ({ handleClose }) => {
     <div className="modal-content">
       <ModalHeader closeButton>
         <ModalTitle className="modal-title h4">
-          Переименовать канал
+          {t('modals.rename.title')}
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="modal-body">
@@ -64,7 +67,12 @@ const ModalRenameChannel = ({ handleClose }) => {
               isSubmitting
             }) => (
             <Form onSubmit={handleSubmit}>
-              <Field className="mb-2 form-control" type="text" id="username-field" name="name" aria-label="Сообщение" placeholder="Введите сообщение"
+              <Field className="mb-2 form-control"
+                     type="text"
+                     id="username-field"
+                     name="name"
+                     aria-label={t('modals.add.channelName')}
+                     placeholder={t('modals.add.enterChannelName')}
                      onChange={handleChange}
                      onBlur={handleBlur}
                      value={values.name}
@@ -85,7 +93,7 @@ const ModalRenameChannel = ({ handleClose }) => {
                   className="btn btn-primary"
                   disabled={isSubmitting}
                 >
-                  Отправить
+                  {t('modals.rename.submit')}
                 </button>
               </div>
             </Form>

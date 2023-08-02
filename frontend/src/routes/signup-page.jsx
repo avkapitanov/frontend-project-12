@@ -6,8 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 import routes from '../routes';
 import axios from 'axios';
 import signupImage from '../assets/signup.jpg';
+import { useTranslation } from 'react-i18next';
 
 export default function SignupPage() {
+  const { t } = useTranslation();
+
   const auth = useAuth();
   const navigate = useNavigate();
   const usernameInputRef = useRef();
@@ -15,15 +18,15 @@ export default function SignupPage() {
 
   const signupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательтное поле'),
+      .min(3, t('signup.usernameLength'))
+      .max(20, t('signup.usernameLength'))
+      .required(t('signup.requiredField')),
     password: Yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательтное поле'),
+      .min(6, t('signup.passMinLength'))
+      .required(t('signup.requiredField')),
     passwordConfirmation: Yup.string()
-      .required('Обязательтное поле')
-      .oneOf([Yup.ref('password'), null], 'Пароли не совпадают'),
+      .required(t('signup.requiredField'))
+      .oneOf([Yup.ref('password'), null], t('signup.passNotMatch')),
   });
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function SignupPage() {
                   alt=""
                 />
               </div>
-              <h1 className="text-center mb-4">Signup</h1>
+              <h1 className="text-center mb-4">{t('signup.title')}</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={signupSchema}
@@ -84,9 +87,9 @@ export default function SignupPage() {
                   <Form onSubmit={handleSubmit}>
                     <div className="mb-3">
                       <label className="form-label" htmlFor="username-field">
-                        Username
+                        {t('signup.username')}
                       </label>
-                      <Field className="form-control" type="text" id="username-field" name="username" placeholder="Username"
+                      <Field className="form-control" type="text" id="username-field" name="username" placeholder={t('signup.username')}
                              onChange={handleChange}
                              onBlur={handleBlur}
                              innerRef={usernameInputRef}
@@ -97,9 +100,9 @@ export default function SignupPage() {
                     </div>
                     <div className="mb-3">
                       <label className="form-label" htmlFor="password-field">
-                        Password
+                        {t('signup.password')}
                       </label>
-                      <Field className="form-control" type="password" id="password-field" name="password" placeholder="Password"
+                      <Field className="form-control" type="password" id="password-field" name="password" placeholder={t('signup.password')}
                              onChange={handleChange}
                              onBlur={handleBlur}
                              value={values.password}
@@ -108,9 +111,9 @@ export default function SignupPage() {
                     </div>
                     <div className="mb-3">
                       <label className="form-label" htmlFor="password-confirmation-field">
-                        Password Confirmation
+                        {t('signup.passwordConfirmation')}
                       </label>
-                      <Field className="form-control" type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder="Password"
+                      <Field className="form-control" type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder={t('signup.passwordConfirmation')}
                              onChange={handleChange}
                              onBlur={handleBlur}
                              value={values.passwordConfirmation}
@@ -118,12 +121,11 @@ export default function SignupPage() {
 
                       {errors.passwordConfirmation && touched.passwordConfirmation && <ErrorMessage className="text-danger" name="passwordConfirmation" component="div" />}
                     </div>
-
                       {signupError && <Form.Control.Feedback type="invalid" tooltip>
-                        Пользователь уже существует
+                        {t('signup.userAlreadyExists')}
                       </Form.Control.Feedback>}
                     <button className="btn btn-outline-primary" type="submit" disabled={isSubmitting}>
-                      Submit
+                      {t('signup.submit')}
                     </button>
                   </Form>
                 )}

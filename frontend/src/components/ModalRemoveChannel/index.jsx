@@ -2,8 +2,11 @@ import { Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const ModalRemoveChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
+
   const { removeChannel } = useSocket();
   const channelId = useSelector((state) => state.modals.data?.channelId);
 
@@ -11,14 +14,11 @@ const ModalRemoveChannel = ({ handleClose }) => {
     <div className="modal-content">
       <ModalHeader closeButton>
         <ModalTitle className="modal-title h4">
-          Удалить канал
+          {t('modals.remove.title')}
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="modal-body">
         <Formik
-          initialValues={{
-            name: '',
-          }}
           onSubmit={async (values, actions) => {
             try {
               await removeChannel(channelId);
@@ -41,14 +41,14 @@ const ModalRemoveChannel = ({ handleClose }) => {
                   type="button"
                   className="me-2 btn btn-secondary"
                 >
-                  Отменить
+                  {t('modals.remove.cancel')}
                 </Button>
                 <button
                   type="submit"
                   className="btn btn-danger"
                   disabled={isSubmitting}
                 >
-                  Удалить
+                  {t('modals.remove.submit')}
                 </button>
               </div>
             </Form>

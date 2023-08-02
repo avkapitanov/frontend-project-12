@@ -3,8 +3,11 @@ import cn from 'classnames';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { actions as modalsActions } from '../../slices/modalsSlice';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Channel = (props) => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const {
@@ -46,11 +49,11 @@ const Channel = (props) => {
               {channel.name}
             </Button>
             <Dropdown.Toggle split className="flex-grow-0" variant={buttonVariant}>
-              <span className="visually-hidden">Меню</span>
+              <span className="visually-hidden">{t('channels.menu')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={handleChannelRename(channel.id)}>Переименовать</Dropdown.Item>
-              <Dropdown.Item onClick={handleChannelRemove(channel.id)}>Удалить</Dropdown.Item>
+              <Dropdown.Item onClick={handleChannelRename(channel.id)}>{t('channels.rename')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleChannelRemove(channel.id)}>{t('channels.remove')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )

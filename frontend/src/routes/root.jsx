@@ -7,8 +7,11 @@ import MessageForm from '../components/MessageForm';
 import { selectAllMessages } from '../slices/messagesSlice';
 import Message from '../components/Message';
 import ModalWrapper from '../components/ModalWrapper';
+import { useTranslation } from 'react-i18next';
 
 export default function Root() {
+  const { t } = useTranslation();
+
   const auth = useAuth();
   const token = auth.getToken();
   const dispatch = useDispatch();
@@ -36,7 +39,9 @@ export default function Root() {
           <div className="col p-0 h-100">
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small"><p className="m-0"><b># {channel?.name}</b></p><span
-                className="text-muted">{messagesByChannel.length} сообщений</span></div>
+                className="text-muted">
+                {t('chat.messageCount', { count: messagesByChannel.length })}
+              </span></div>
               <div id="messages-box" className="chat-messages overflow-auto px-5 ">
                 {messagesByChannel.map((message) => <Message message={message} key={message.id} />)}
               </div>

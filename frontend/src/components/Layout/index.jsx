@@ -1,16 +1,19 @@
 import { useAuth } from '../../hooks/useAuth';
 import { Button, Navbar } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Layout = () => {
+  const { t } = useTranslation();
+
   const { logOut, username } = useAuth();
   return (
     <>
       <div className="d-flex flex-column h-100">
         <Navbar bg="white" expand="lg" className="shadow-sm">
           <div className="container">
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-            {!!username && <Button onClick={logOut}>Logout</Button>}
+            <Navbar.Brand as={Link} to="/">{t('common.hexletChat')}</Navbar.Brand>
+            {!!username && <Button onClick={logOut}>{t('common.logout')}</Button>}
           </div>
         </Navbar>
         <Outlet />

@@ -7,8 +7,11 @@ import { useEffect, useRef } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
+import { useTranslation } from 'react-i18next';
 
 const ModalAddChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
+
   const channels = useSelector(selectAllChannels);
   const inputRef = useRef();
   const { addNewChannel } = useSocket();
@@ -21,10 +24,10 @@ const ModalAddChannel = ({ handleClose }) => {
     name: yup
       .string()
       .trim()
-      .min(3, 'Минимум 3 символа')
-      .max(20, 'Максимум 20 символов')
-      .notOneOf(channels.map(({ name }) => name), 'Такой канал уже существует')
-      .required('Обязательно')
+      .min(3, t('modals.add.min'))
+      .max(20, t('modals.add.max'))
+      .notOneOf(channels.map(({ name }) => name), t('modals.add.alreadyExists'))
+      .required(t('modals.add.requiredField'))
   });
 
   return (
@@ -32,7 +35,7 @@ const ModalAddChannel = ({ handleClose }) => {
       <div className="modal-content">
         <ModalHeader closeButton>
           <ModalTitle className="modal-title h4">
-            Добавить канал
+            {t('modals.add.title')}
           </ModalTitle>
         </ModalHeader>
         <ModalBody className="modal-body">
@@ -64,7 +67,12 @@ const ModalAddChannel = ({ handleClose }) => {
                 isSubmitting
               }) => (
           <Form onSubmit={handleSubmit}>
-            <Field className="mb-2 form-control" type="text" id="username-field" name="name" aria-label="Сообщение" placeholder="Введите сообщение"
+            <Field className="mb-2 form-control"
+                   type="text"
+                   id="username-field"
+                   name="name"
+                   aria-label={t('modals.add.channelName')}
+                   placeholder={t('modals.add.enterChannelName')}
                    onChange={handleChange}
                    onBlur={handleBlur}
                    value={values.name}
@@ -78,14 +86,14 @@ const ModalAddChannel = ({ handleClose }) => {
                 type="button"
                 className="me-2 btn btn-secondary"
               >
-                Отменить
+                {t('modals.add.cancel')}
               </Button>
               <button
                 type="submit"
                 className="btn btn-primary"
                 disabled={isSubmitting}
               >
-                Отправить
+                {t('modals.add.submit')}
               </button>
             </div>
           </Form>

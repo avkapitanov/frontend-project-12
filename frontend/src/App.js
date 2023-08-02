@@ -6,7 +6,6 @@ import {
 import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import LoginPage from './routes/login-page';
-import AuthProvider from './providers/AuthProvider';
 import { useAuth } from './hooks/useAuth';
 import routes from './routes';
 import SignupPage from './routes/signup-page';
@@ -34,7 +33,6 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <Root />
           </PrivateRoute>,
-        errorElement: <ErrorPage />,
       },
       {
         path: routes.loginPath(),
@@ -44,15 +42,14 @@ const router = createBrowserRouter([
         path: routes.signupPath(),
         element: <SignupPage />,
       },
+      { path: "*", element: <ErrorPage /> },
     ],
   },
 ]);
 
 function App() {
   return (
-    <AuthProvider>
      <RouterProvider router={router} />
-    </AuthProvider>
   );
 }
 
