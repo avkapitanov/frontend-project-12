@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import routes from '../routes';
 import { useNavigate } from 'react-router-dom';
 import { useRollbar } from '@rollbar/react';
+import { animateScroll } from 'react-scroll';
 
 export default function Root() {
   const { t } = useTranslation();
@@ -27,6 +28,10 @@ export default function Root() {
   const messages = useSelector(selectAllMessages);
   const messagesByChannel = messages.filter((message) => channel.id === message.channelId);
   const loadingStatus = useSelector((state) => state.channels.loadingStatus);
+
+  useEffect(() => {
+    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
+  }, [messages]);
 
   useEffect(() => {
     dispatch(fetchChannels(token));

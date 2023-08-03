@@ -1,25 +1,17 @@
 import {
-  createBrowserRouter, Navigate,
+  createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
 import Root from './routes/root';
 import ErrorPage from './routes/error-page';
 import LoginPage from './routes/login-page';
-import { useAuth } from './hooks/useAuth';
 import routes from './routes';
 import SignupPage from './routes/signup-page';
 import Layout from './components/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-
-  return (
-    auth.username ? children : <Navigate to='/login' />
-  );
-};
+import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -29,13 +21,6 @@ const router = createBrowserRouter([
       { index: true, element: <PrivateRoute>
           <Root />
         </PrivateRoute> },
-      {
-        path: routes.rootPath(),
-        element:
-          <PrivateRoute>
-            <Root />
-          </PrivateRoute>,
-      },
       {
         path: routes.loginPath(),
         element: <LoginPage />,

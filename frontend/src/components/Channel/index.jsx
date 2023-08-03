@@ -5,16 +5,9 @@ import { actions as modalsActions } from '../../slices/modalsSlice';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-const Channel = (props) => {
+const Channel = ({ channel, activeChannelId, handleChoose }) => {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
-
-  const {
-    channel,
-    activeChannelId,
-    handleChoose
-  } = props;
 
   const handleChannelRemove = (channelId) => () => {
     dispatch(modalsActions.openModal({ type: 'removeChannel', data: { channelId } }));

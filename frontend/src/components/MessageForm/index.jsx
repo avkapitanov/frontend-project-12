@@ -37,7 +37,6 @@ const MessageForm = ({ channel }) => {
           await sendMessage(messageToSend);
           actions.resetForm();
         } catch (error) {
-          debugger
           rollbar.error('AddMessage', error);
           toast.error(t('error.networkError'));
           console.error(error);

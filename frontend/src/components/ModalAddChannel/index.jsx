@@ -1,7 +1,7 @@
 import {
   selectAllChannels
 } from '../../slices/channelsSlice';
-import * as yup from 'yup';
+
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
+import channelSchema from '../../validation/channelSchema';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -22,16 +23,6 @@ const ModalAddChannel = ({ handleClose }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  const ChannelSchema = yup.object().shape({
-    name: yup
-      .string()
-      .trim()
-      .min(3, t('modals.add.min'))
-      .max(20, t('modals.add.max'))
-      .notOneOf(channels.map(({ name }) => name), t('modals.add.alreadyExists'))
-      .required(t('modals.add.requiredField'))
-  });
 
   return (
 
@@ -46,7 +37,7 @@ const ModalAddChannel = ({ handleClose }) => {
             initialValues={{
               name: '',
             }}
-            validationSchema={ChannelSchema}
+            validationSchema={channelSchema(channels)}
             onSubmit={async (values, actions) => {
               const { name } = values;
               const filteredName = leoProfanity.clean(name);

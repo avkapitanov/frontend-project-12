@@ -75,6 +75,7 @@ const ru = {
     error: {
       networkError: 'Ошибка соединения',
       authError: 'Ошибка авторизации',
+      requiredField: 'Обязательное поле',
     }
   },
 };

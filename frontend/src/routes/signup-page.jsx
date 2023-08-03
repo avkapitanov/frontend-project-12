@@ -1,5 +1,4 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -7,27 +6,22 @@ import routes from '../routes';
 import axios from 'axios';
 import signupImage from '../assets/signup.jpg';
 import { useTranslation } from 'react-i18next';
+import signupSchema from '../validation/signupSchema';
 
 export default function SignupPage() {
   const { t } = useTranslation();
 
   const auth = useAuth();
+  const token = auth.getToken();
   const navigate = useNavigate();
   const usernameInputRef = useRef();
   const [signupError, setSignupFailed] = useState(false);
 
-  const signupSchema = Yup.object().shape({
-    username: Yup.string()
-      .min(3, t('signup.usernameLength'))
-      .max(20, t('signup.usernameLength'))
-      .required(t('signup.requiredField')),
-    password: Yup.string()
-      .min(6, t('signup.passMinLength'))
-      .required(t('signup.requiredField')),
-    passwordConfirmation: Yup.string()
-      .required(t('signup.requiredField'))
-      .oneOf([Yup.ref('password'), null], t('signup.passNotMatch')),
-  });
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -49,7 +43,7 @@ export default function SignupPage() {
               <h1 className="text-center mb-4">{t('signup.title')}</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
-                validationSchema={signupSchema}
+                validationSchema={signupSchema(t)}
                 onSubmit={async ({ username, password }, actions) => {
                   setSignupFailed(false);
 
