@@ -1,5 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form, Field } from 'formik';
 import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -7,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import loginImage from '../assets/login.jpg';
 import { useTranslation } from 'react-i18next';
 import loginSchema from '../validation/loginSchema';
+import cn from 'classnames';
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -34,11 +34,7 @@ export default function LoginPage() {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src={loginImage}
-                  className="rounded-circle"
-                  alt=""
-                />
+                <img src={loginImage} className="rounded-circle" alt="" />
               </div>
               <h1 className="text-center mb-4">{t('login.title')}</h1>
               <Formik
@@ -53,40 +49,27 @@ export default function LoginPage() {
                     const errMsg = (response.status === 401)
                       ? t('login.authError') : t('login.networkError');
                     setAuthError(errMsg);
+                    usernameInputRef.current.focus();
                   }
                 }}
               >
-                {({
-                    values,
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                  }) => (
-                  <Form onSubmit={handleSubmit}>
-                    {authError ? <div className="text-danger">{t('login.authError')}</div> : null}
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="username-field">{t('login.username')}</label>
-                      <Field className="form-control" type="text" id="username-field" name="username" placeholder={t('login.username')}
-                             onChange={handleChange}
-                             onBlur={handleBlur}
+                {({ values, handleSubmit, isSubmitting }) => (
+                  <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
+                    <div className="form-floating mb-3">
+                      <Field className={cn('form-control', { 'is-invalid': authError })} type="text" id="username-field" name="username" required placeholder={t('login.username')}
                              innerRef={usernameInputRef}
                              value={values.username}
                       />
-                      {errors.username && touched.username && <ErrorMessage className="text-danger" name="username" component="div" />}
+                      <label htmlFor="username-field">{t('login.username')}</label>
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="password-field">{t('login.password')}</label>
-                      <Field className="form-control" type="password" id="password-field" name="password" placeholder={t('login.password')}
-                             onChange={handleChange}
-                             onBlur={handleBlur}
+                    <div className="form-floating mb-3">
+                      <Field className={cn('form-control', { 'is-invalid': authError })} type="password" id="password-field" name="password" required placeholder={t('login.password')}
                              value={values.password}
                       />
-                      {errors.password && touched.password && <ErrorMessage className="text-danger" name="password" component="div" />}
+                      <label htmlFor="password-field">{t('login.password')}</label>
+                      <div className="invalid-tooltip">{authError ? t(authError) : null}</div>
                     </div>
-                    <button className="btn btn-outline-primary" type="submit" disabled={isSubmitting}>
+                    <button className="w-100 mb-3 btn btn-outline-primary" type="submit" disabled={isSubmitting}>
                       {t('login.submit')}
                     </button>
                   </Form>
