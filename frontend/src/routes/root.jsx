@@ -29,7 +29,7 @@ export default function Root() {
 
   useEffect(() => {
     dispatch(fetchChannels(token));
-  }, [token]);
+  }, [token, dispatch]);
 
   useEffect(() => {
     if (loadingStatus === 'authError') {
@@ -41,7 +41,7 @@ export default function Root() {
     if (loadingStatus === 'failed') {
       toast.error(t(`error.${loadingStatus}`));
     }
-  }, [loadingStatus]);
+  }, [loadingStatus, auth, navigate, t]);
 
   return (
     <>

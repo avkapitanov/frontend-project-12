@@ -1,4 +1,4 @@
-export default {
+const ru = {
   translation: {
     chat: {
       messageCount_zero: '{{count}} сообщений',
@@ -78,3 +78,5 @@ export default {
     }
   },
 };
+
+export default ru;

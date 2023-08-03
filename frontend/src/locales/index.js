@@ -1,4 +1,6 @@
 import en from './en.js';
 import ru from './ru.js';
 
-export default { en, ru };
+const resources = { en, ru };
+
+export default resources;

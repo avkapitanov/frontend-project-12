@@ -11,6 +11,14 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import AuthProvider from './providers/AuthProvider';
 import leoProfanity from 'leo-profanity';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+
+const rollbarConfig = {
+  accessToken: process.env.ROLLBAR_TOKEN,
+  environment: 'production',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
 
 const init = async () => {
   await i18next
@@ -49,7 +57,11 @@ const init = async () => {
     <Provider store={store}>
       <SocketProvider socket={socketClient}>
         <AuthProvider>
-          <App />
+          <RollbarProvider config={rollbarConfig}>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </RollbarProvider>
         </AuthProvider>
       </SocketProvider>
     </Provider>
