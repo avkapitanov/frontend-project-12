@@ -5,10 +5,12 @@ import { useRef } from 'react';
 import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
+import { toast } from 'react-toastify';
 
 const MessageForm = ({ channel }) => {
   const { t } = useTranslation();
-
+  const rollbar = useRollbar();
   const { username } = useAuth();
   const inputRef = useRef(null);
   const { sendMessage } = useSocket();
@@ -32,10 +34,13 @@ const MessageForm = ({ channel }) => {
         };
 
         try {
-          sendMessage(messageToSend);
+          await sendMessage(messageToSend);
           actions.resetForm();
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          debugger
+          rollbar.error('AddMessage', error);
+          toast.error(t('error.networkError'));
+          console.error(error);
         }
         actions.setSubmitting(false);
         inputRef.current.focus();

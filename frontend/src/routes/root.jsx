@@ -11,10 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import routes from '../routes';
 import { useNavigate } from 'react-router-dom';
+import { useRollbar } from '@rollbar/react';
 
 export default function Root() {
   const { t } = useTranslation();
-
+  const rollbar = useRollbar();
   const auth = useAuth();
   const token = auth.getToken();
   const dispatch = useDispatch();
@@ -35,10 +36,12 @@ export default function Root() {
     if (loadingStatus === 'authError') {
       auth.logOut();
       navigate(routes.loginPath());
+      rollbar.error('FetchChannels', loadingStatus);
       toast.error(t(`error.${loadingStatus}`));
     }
 
     if (loadingStatus === 'failed') {
+      rollbar.error('FetchChannels', loadingStatus);
       toast.error(t(`error.${loadingStatus}`));
     }
   }, [loadingStatus, auth, navigate, t]);

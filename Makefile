@@ -8,10 +8,10 @@ build:
 	make install && npm run build
 
 start-frontend:
-	npm start
+	make -C frontend start
 
 start-backend:
 	npx start-server
 
 start:
-	npm start && npx start-server
+	make start-backend & make start-frontend

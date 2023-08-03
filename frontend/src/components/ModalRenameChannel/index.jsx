@@ -10,10 +10,11 @@ import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
 const ModalRenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-
+  const rollbar = useRollbar();
   const channels = useSelector(selectAllChannels);
   const channelId = useSelector((state) => state.modals.data?.channelId);
   const channel = useSelector((state) => selectChannelById(state, channelId));
@@ -57,6 +58,8 @@ const ModalRenameChannel = ({ handleClose }) => {
               actions.setSubmitting(false);
               toast.success(t('modals.rename.channelRenamed'));
             } catch (error) {
+              rollbar.error('RenameChannel', error);
+              toast.error(t('error.networkError'));
               actions.setSubmitting(false);
             }
           }}

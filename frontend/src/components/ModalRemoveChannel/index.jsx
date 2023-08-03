@@ -4,10 +4,11 @@ import { useSocket } from '../../hooks/useSocket';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-
+  const rollbar = useRollbar();
   const { removeChannel } = useSocket();
   const channelId = useSelector((state) => state.modals.data?.channelId);
 
@@ -28,6 +29,8 @@ const ModalRemoveChannel = ({ handleClose }) => {
               actions.setSubmitting(false);
               toast.success(t('modals.remove.channelRemoved'));
             } catch (error) {
+              rollbar.error('RemoveChannel', error);
+              toast.error(t('error.networkError'));
               actions.setSubmitting(false);
             }
           }}

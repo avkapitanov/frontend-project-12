@@ -10,10 +10,11 @@ import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-
+  const rollbar = useRollbar();
   const channels = useSelector(selectAllChannels);
   const inputRef = useRef();
   const { addNewChannel } = useSocket();
@@ -58,6 +59,8 @@ const ModalAddChannel = ({ handleClose }) => {
                 actions.setSubmitting(false);
                 toast.success(t('modals.add.channelAdded'));
               } catch (error) {
+                rollbar.error('AddChannel', error);
+                toast.error(t('error.networkError'));
                 actions.setSubmitting(false);
               }
             }}

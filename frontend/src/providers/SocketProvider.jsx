@@ -6,8 +6,38 @@ const SocketProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
   const timeout = 4000;
 
-  const sendMessage = (message) => {
-    socket.emit('newMessage', message);
+  const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, reject) => {
+    let state = 'pending';
+    const timer = setTimeout(() => {
+      state = 'rejected';
+      reject();
+    }, 3000);
+
+    socketFunc(...args, (response) => {
+      if (state !== 'pending') return;
+
+      clearTimeout(timer);
+
+      if (response.status === 'ok') {
+        state = 'resolved';
+        resolve(response.data);
+      }
+
+      reject();
+    });
+  });
+
+  const api = {
+    sendMessage: withAcknowledgement((...args) => socket.volatile.emit('newMessage', ...args)),
+    createChannel: withAcknowledgement((...args) => socket.volatile.emit('newChannel', ...args)),
+    renameChannel: withAcknowledgement((...args) => socket.volatile.emit('renameChannel', ...args)),
+    removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
+  };
+
+  const sendMessage = async (message) => {
+    await socket
+      .timeout(timeout)
+      .emitWithAck('newMessage', message);
   };
 
   const addNewChannel = async (channel) => {
@@ -15,6 +45,7 @@ const SocketProvider = ({ socket, children }) => {
       .timeout(timeout)
       .emitWithAck('newChannel', channel);
 
+    dispatch(actions.addChannel(data));
     dispatch(actions.setCurrentChannelId(data.id));
   };
 
