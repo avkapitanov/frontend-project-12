@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
+  Button,
   ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -75,13 +76,7 @@ const ModalAddChannel = ({ handleClose }) => {
 
               <div className="d-flex justify-content-end">
                 <ButtonClose handleClose={handleClose} text={t('modals.add.cancel')} />
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {t('modals.add.submit')}
-                </button>
+                <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>{t('modals.add.submit')}</Button>
               </div>
             </Form>
           )}

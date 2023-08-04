@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
+  Button,
   ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -83,13 +84,7 @@ const ModalRenameChannel = ({ handleClose }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <ButtonClose handleClose={handleClose} text={t('modals.rename.cancel')} />
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {t('modals.rename.submit')}
-                </button>
+                <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>{t('modals.rename.submit')}</Button>
               </div>
             </Form>
           )}
