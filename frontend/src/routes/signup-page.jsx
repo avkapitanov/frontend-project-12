@@ -33,11 +33,10 @@ export default function SignupPage() {
       <div className="row justify-content-center align-content-center h-100">
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
-            <div className="card-body row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+            <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+              <div>
                 <img src={signupImage} className="rounded-circle" alt="" />
               </div>
-              <h1 className="text-center mb-4">{t('signup.title')}</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={signupSchema(t)}
@@ -65,7 +64,8 @@ export default function SignupPage() {
                 }}
               >
                 {({ values, errors, handleSubmit, isSubmitting }) => (
-                  <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
+                  <Form className="w-50" onSubmit={handleSubmit}>
+                    <h1 className="text-center mb-4">{t('signup.title')}</h1>
                     <div className="form-floating mb-3">
                       <Field className={cn('form-control', { 'is-invalid': signupError })} type="text" id="username-field" name="username" placeholder={t('signup.username')}
                              innerRef={usernameInputRef}

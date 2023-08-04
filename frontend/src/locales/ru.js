@@ -26,7 +26,7 @@ const ru = {
       passMinLength: 'Не менее 6 символов',
       passNotMatch: 'Пароли не совпадают',
       usernameLength: 'От 3 до 20 символов',
-      username: 'Ваш ник',
+      username: 'Имя пользователя',
       password: 'Пароль',
       passwordConfirmation: 'Подтвердите пароль',
       userAlreadyExists: 'Такой пользователь уже существует',
