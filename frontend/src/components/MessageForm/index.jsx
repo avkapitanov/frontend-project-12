@@ -1,5 +1,4 @@
 import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
 import { useAuth } from '../../hooks/useAuth';
 import { useRef } from 'react';
 import { useSocket } from '../../hooks/useSocket';
@@ -7,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
+import messageSchema from '../../validation/messageSchema';
 
 const MessageForm = ({ channel }) => {
   const { t } = useTranslation();
@@ -15,16 +15,12 @@ const MessageForm = ({ channel }) => {
   const inputRef = useRef(null);
   const { sendMessage } = useSocket();
 
-  const MessageSchema = Yup.object().shape({
-    message: Yup.string().required(t('chat.required')),
-  });
-
   return (
     <Formik
       initialValues={{
         message: '',
       }}
-      validationSchema={MessageSchema}
+      validationSchema={messageSchema(t)}
       onSubmit={async ({ message }, actions) => {
         const filteredMessage = leoProfanity.clean(message);
         const messageToSend = {
@@ -45,14 +41,7 @@ const MessageForm = ({ channel }) => {
         inputRef.current.focus();
       }}
     >
-      {({
-          values,
-          handleChange,
-          handleBlur,
-          isSubmitting,
-          dirty,
-          isValid
-        }) => (
+      {({ values, isSubmitting, dirty, isValid }) => (
         <Form noValidate="" className="py-1 border rounded-2">
           <div className="input-group has-validation">
             <Field className="border-0 p-0 ps-2 form-control"
@@ -63,8 +52,6 @@ const MessageForm = ({ channel }) => {
                    placeholder={t('chat.enterMessage')}
                    autoComplete="off"
                    disabled={isSubmitting}
-                   onChange={handleChange}
-                   onBlur={handleBlur}
                    value={values.message}
                    innerRef={inputRef}
             />

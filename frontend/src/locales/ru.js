@@ -6,7 +6,7 @@ const ru = {
       messageCount_few: '{{count}} сообщения',
       messageCount_many: '{{count}} сообщений',
       enterMessage: 'Введите сообщение',
-      message: 'Сообщение',
+      message: 'Новое сообщение',
       submit: 'Отправить',
       required: 'Сообщение обязательно'
     },
