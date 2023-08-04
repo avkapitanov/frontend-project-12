@@ -38,7 +38,7 @@ const ModalRenameChannel = ({ handleClose }) => {
           initialValues={{
             name: channel.name,
           }}
-          validationSchema={channelSchema(channels)}
+          validationSchema={channelSchema(channels, t)}
           onSubmit={async (values, actions) => {
             const { name } = values;
             const filteredName = leoProfanity.clean(name);
