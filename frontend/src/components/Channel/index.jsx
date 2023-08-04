@@ -55,7 +55,6 @@ const Channel = ({ channel, activeChannelId, handleChoose }) => {
             type="button"
             className={channelBtnClasses}
             onClick={handleChoose}
-            variant={buttonVariant}
           >
             <span className="me-1">#</span>
             {channel.name}
