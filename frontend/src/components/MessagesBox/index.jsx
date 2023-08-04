@@ -18,7 +18,7 @@ const MessagesBox = () => {
 
   useEffect(() => {
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
-  }, [messages]);
+  }, [messagesByChannel]);
 
   return (
     <div className="col p-0 h-100">
