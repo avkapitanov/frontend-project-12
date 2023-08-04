@@ -1,7 +1,14 @@
 /* eslint-disable no-param-reassign */
 
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { getChannels } from '../api';
+import axios from 'axios';
+import routes from '../routes';
+
+const getChannels = (token) => axios.get(routes.api.dataPath(), {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchTasks',

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useRollbar } from '@rollbar/react';
 import { animateScroll } from 'react-scroll';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 import { fetchChannels, selectChannelById } from '../slices/channelsSlice';
 import ChannelsList from '../components/ChannelsList';
 import MessageForm from '../components/MessageForm';
@@ -49,7 +49,7 @@ const Root = () => {
       rollbar.error('FetchChannels', loadingStatus);
       toast.error(t(`error.${loadingStatus}`));
     }
-  }, [loadingStatus, auth, navigate, t]);
+  }, [loadingStatus, auth, navigate, t, rollbar]);
 
   return (
     <>

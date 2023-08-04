@@ -10,7 +10,7 @@ import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import cn from 'classnames';
 import channelSchema from '../../validation/channelSchema';
-import { useSocket } from '../../hooks/useSocket';
+import useSocket from '../../hooks/useSocket';
 import {
   selectAllChannels, selectChannelById,
 } from '../../slices/channelsSlice';

@@ -1,7 +1,7 @@
 import { Button, Navbar } from 'react-bootstrap';
 import { Link, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 
 const Layout = () => {
   const { t } = useTranslation();

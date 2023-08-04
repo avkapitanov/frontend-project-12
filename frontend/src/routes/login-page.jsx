@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import cn from 'classnames';
 import loginImage from '../assets/login.jpg';
 import loginSchema from '../validation/loginSchema';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
 const LoginPage = () => {
   const { t } = useTranslation();

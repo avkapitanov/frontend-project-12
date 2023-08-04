@@ -6,7 +6,7 @@ import React from 'react';
 import leoProfanity from 'leo-profanity';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import resources from './locales/index';
-import { store } from './slices/store';
+import store from './slices/store';
 import { addMessage } from './slices/messagesSlice';
 import { actions as channelActions } from './slices/channelsSlice';
 import SocketProvider from './providers/SocketProvider';

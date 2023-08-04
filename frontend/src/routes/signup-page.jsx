@@ -7,7 +7,7 @@ import cn from 'classnames';
 import routes from '../routes';
 import signupImage from '../assets/signup.jpg';
 import signupSchema from '../validation/signupSchema';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
 const SignupPage = () => {
   const { t } = useTranslation();

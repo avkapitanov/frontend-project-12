@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
-import { useSocket } from '../../hooks/useSocket';
+import useSocket from '../../hooks/useSocket';
 import {
   selectAllChannels,
 } from '../../slices/channelsSlice';

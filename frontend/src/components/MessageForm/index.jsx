@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
-import { useSocket } from '../../hooks/useSocket';
-import { useAuth } from '../../hooks/useAuth';
+import useSocket from '../../hooks/useSocket';
+import useAuth from '../../hooks/useAuth';
 import messageSchema from '../../validation/messageSchema';
 
 const MessageForm = ({ channel }) => {
