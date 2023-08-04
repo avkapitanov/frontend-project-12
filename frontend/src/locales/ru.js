@@ -24,7 +24,7 @@ const ru = {
       title: 'Регистрация',
       requiredField: 'Обязательное поле',
       passMinLength: 'Не менее 6 символов',
-      passNotMatch: 'Пароли не совпадают',
+      passNotMatch: 'Пароли должны совпадать',
       usernameLength: 'От 3 до 20 символов',
       username: 'Имя пользователя',
       password: 'Пароль',
