@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
-  Button, ModalBody, ModalHeader, ModalTitle,
+  ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import useSocket from '../../hooks/useSocket';
 import {
   selectAllChannels, selectChannelById,
 } from '../../slices/channelsSlice';
+import ButtonClose from '../ButtonClose';
 
 const ModalRenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -81,13 +82,7 @@ const ModalRenameChannel = ({ handleClose }) => {
                 <div className="invalid-tooltip">{errors.name}</div>
               </div>
               <div className="d-flex justify-content-end">
-                <Button
-                  onClick={handleClose}
-                  type="button"
-                  className="me-2 btn btn-secondary"
-                >
-                  Отменить
-                </Button>
+                <ButtonClose handleClose={handleClose} text={t('modals.rename.cancel')} />
                 <button
                   type="submit"
                   className="btn btn-primary"

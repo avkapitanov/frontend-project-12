@@ -70,6 +70,7 @@ const ru = {
         title: 'Переименовать канал',
         submit: 'Переименовать',
         channelRenamed: 'Канал переименован',
+        cancel: 'Отменить',
       },
     },
     error: {

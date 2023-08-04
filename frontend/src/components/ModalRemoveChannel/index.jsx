@@ -1,12 +1,13 @@
 import { Form, Formik } from 'formik';
 import {
-  Button, ModalBody, ModalHeader, ModalTitle,
+  ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 import useSocket from '../../hooks/useSocket';
+import ButtonClose from '../ButtonClose';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -44,13 +45,7 @@ const ModalRemoveChannel = ({ handleClose }) => {
             <Form onSubmit={handleSubmit}>
               <p className="lead">Уверены?</p>
               <div className="d-flex justify-content-end">
-                <Button
-                  onClick={handleClose}
-                  type="button"
-                  className="me-2 btn btn-secondary"
-                >
-                  {t('modals.remove.cancel')}
-                </Button>
+                <ButtonClose handleClose={handleClose} text={t('modals.remove.cancel')} />
                 <button
                   type="submit"
                   className="btn btn-danger"

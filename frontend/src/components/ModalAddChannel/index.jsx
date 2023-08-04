@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
-  Button, ModalBody, ModalHeader, ModalTitle,
+  ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -13,6 +13,7 @@ import {
   selectAllChannels,
 } from '../../slices/channelsSlice';
 import channelSchema from '../../validation/channelSchema';
+import ButtonClose from '../ButtonClose';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -73,13 +74,7 @@ const ModalAddChannel = ({ handleClose }) => {
               </div>
 
               <div className="d-flex justify-content-end">
-                <Button
-                  onClick={handleClose}
-                  type="button"
-                  className="me-2 btn btn-secondary"
-                >
-                  {t('modals.add.cancel')}
-                </Button>
+                <ButtonClose handleClose={handleClose} text={t('modals.add.cancel')} />
                 <button
                   type="submit"
                   className="btn btn-primary"
