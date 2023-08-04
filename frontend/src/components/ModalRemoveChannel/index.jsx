@@ -1,6 +1,5 @@
 import { Form, Formik } from 'formik';
 import {
-  Button,
   ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -44,10 +43,16 @@ const ModalRemoveChannel = ({ handleClose }) => {
             isSubmitting,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <p className="lead">Уверены?</p>
+              <p className="lead">{t('modals.remove.areSure')}</p>
               <div className="d-flex justify-content-end">
                 <ButtonClose handleClose={handleClose} text={t('modals.remove.cancel')} />
-                <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>{t('modals.remove.submit')}</Button>
+                <button
+                  type="submit"
+                  className="btn btn-danger"
+                  disabled={isSubmitting}
+                >
+                  {t('modals.remove.submit')}
+                </button>
               </div>
             </Form>
           )}

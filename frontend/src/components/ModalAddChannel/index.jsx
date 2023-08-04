@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
-  Button,
   ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -49,13 +48,12 @@ const ModalAddChannel = ({ handleClose }) => {
             try {
               await addNewChannel(channel);
               handleClose();
-              actions.setSubmitting(false);
               toast.success(t('modals.add.channelAdded'));
             } catch (error) {
               rollbar.error('AddChannel', error);
               toast.error(t('error.networkError'));
-              actions.setSubmitting(false);
             }
+            actions.setSubmitting(false);
           }}
         >
           {({ values, handleSubmit, isSubmitting }) => (
@@ -76,7 +74,13 @@ const ModalAddChannel = ({ handleClose }) => {
 
               <div className="d-flex justify-content-end">
                 <ButtonClose handleClose={handleClose} text={t('modals.add.cancel')} />
-                <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>{t('modals.add.submit')}</Button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {t('modals.add.submit')}
+                </button>
               </div>
             </Form>
           )}

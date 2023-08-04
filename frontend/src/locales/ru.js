@@ -65,6 +65,7 @@ const ru = {
         cancel: 'Отменить',
         submit: 'Удалить',
         channelRemoved: 'Канал удалён',
+        areSure: 'Уверены?',
       },
       rename: {
         title: 'Переименовать канал',

@@ -25,13 +25,13 @@ const SocketProvider = ({ socket, children }) => {
   const removeChannel = async (id) => {
     await socket
       .timeout(timeout)
-      .emit('removeChannel', { id });
+      .emitWithAck('removeChannel', { id });
   };
 
   const renameChannel = async (id, name) => {
     await socket
       .timeout(timeout)
-      .emit('renameChannel', { id, name });
+      .emitWithAck('renameChannel', { id, name });
   };
 
   const contextValue = useMemo(

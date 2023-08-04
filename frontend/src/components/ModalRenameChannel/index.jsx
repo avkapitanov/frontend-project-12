@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
-  Button,
   ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -52,14 +51,13 @@ const ModalRenameChannel = ({ handleClose }) => {
             try {
               await renameChannel(channelId, filteredName);
               handleClose();
-              actions.setSubmitting(false);
               toast.success(t('modals.rename.channelRenamed'));
             } catch (error) {
               setRenameError(true);
               rollbar.error('RenameChannel', error);
               toast.error(t('error.networkError'));
-              actions.setSubmitting(false);
             }
+            actions.setSubmitting(false);
           }}
           validateOnChange={false}
           validateOnBlur={false}
@@ -84,7 +82,13 @@ const ModalRenameChannel = ({ handleClose }) => {
               </div>
               <div className="d-flex justify-content-end">
                 <ButtonClose handleClose={handleClose} text={t('modals.rename.cancel')} />
-                <Button type="submit" className="btn btn-primary" disabled={isSubmitting}>{t('modals.rename.submit')}</Button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  {t('modals.rename.submit')}
+                </button>
               </div>
             </Form>
           )}
