@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import signupImage from '../assets/signup.jpg';
 import { useTranslation } from 'react-i18next';
 import signupSchema from '../validation/signupSchema';
+import cn from 'classnames';
 
 export default function SignupPage() {
   const { t } = useTranslation();
@@ -34,11 +35,7 @@ export default function SignupPage() {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src={signupImage}
-                  className="rounded-circle"
-                  alt=""
-                />
+                <img src={signupImage} className="rounded-circle" alt="" />
               </div>
               <h1 className="text-center mb-4">{t('signup.title')}</h1>
               <Formik
@@ -46,7 +43,6 @@ export default function SignupPage() {
                 validationSchema={signupSchema(t)}
                 onSubmit={async ({ username, password }, actions) => {
                   setSignupFailed(false);
-
                   try {
                     const res = await axios.post(
                       routes.api.signUpPath(),
@@ -58,7 +54,6 @@ export default function SignupPage() {
                     if (!err.isAxiosError) {
                       throw err;
                     }
-
                     if (err.response.status === 409) {
                       setSignupFailed(true);
                       usernameInputRef.current.select();
@@ -69,56 +64,32 @@ export default function SignupPage() {
                   }
                 }}
               >
-                {({
-                    values,
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                  }) => (
-                  <Form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="username-field">
-                        {t('signup.username')}
-                      </label>
-                      <Field className="form-control" type="text" id="username-field" name="username" placeholder={t('signup.username')}
-                             onChange={handleChange}
-                             onBlur={handleBlur}
+                {({ values, errors, handleSubmit, isSubmitting }) => (
+                  <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
+                    <div className="form-floating mb-3">
+                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="text" id="username-field" name="username" placeholder={t('signup.username')}
                              innerRef={usernameInputRef}
                              value={values.username}
                       />
-
-                      {errors.username && touched.username && <ErrorMessage className="text-danger" name="username" component="div" />}
+                      <label className="form-label" htmlFor="username-field">{t('signup.username')}</label>
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="password-field">
-                        {t('signup.password')}
-                      </label>
-                      <Field className="form-control" type="password" id="password-field" name="password" placeholder={t('signup.password')}
-                             onChange={handleChange}
-                             onBlur={handleBlur}
+                    <div className="form-floating mb-3">
+                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="password" id="password-field" name="password" placeholder={t('signup.password')}
                              value={values.password}
                       />
-                      {errors.password && touched.password && <ErrorMessage className="text-danger" name="password" component="div" />}
+                      <label htmlFor="password-field">{t('signup.password')}</label>
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="password-confirmation-field">
-                        {t('signup.passwordConfirmation')}
-                      </label>
-                      <Field className="form-control" type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder={t('signup.passwordConfirmation')}
-                             onChange={handleChange}
-                             onBlur={handleBlur}
+                    <div className="form-floating mb-3">
+                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder={t('signup.passwordConfirmation')}
                              value={values.passwordConfirmation}
                       />
-
-                      {errors.passwordConfirmation && touched.passwordConfirmation && <ErrorMessage className="text-danger" name="passwordConfirmation" component="div" />}
+                      <label htmlFor="password-confirmation-field">{t('signup.passwordConfirmation')}</label>
+                      <div className="invalid-tooltip">
+                        {signupError ? t('signup.userAlreadyExists') : null}
+                        {errors.passwordConfirmation}
+                      </div>
                     </div>
-                      {signupError && <Form.Control.Feedback type="invalid" tooltip>
-                        {t('signup.userAlreadyExists')}
-                      </Form.Control.Feedback>}
-                    <button className="btn btn-outline-primary" type="submit" disabled={isSubmitting}>
+                    <button className="w-100 mb-3 btn btn-outline-primary" type="submit" disabled={isSubmitting}>
                       {t('signup.submit')}
                     </button>
                   </Form>

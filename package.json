@@ -19,7 +19,7 @@
     "url": "https://github.com/avkapitanov/frontend-project-12/issues"
   },
   "engines": {
-    "node": "16.14.0"
+    "node": ">=16.14.0"
   },
   "homepage": "https://github.com/avkapitanov/frontend-project-12#readme",
   "dependencies": {
