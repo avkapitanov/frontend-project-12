@@ -63,24 +63,26 @@ export default function SignupPage() {
                   }
                 }}
               >
-                {({ values, errors, handleSubmit, isSubmitting }) => (
+                {({ values, errors, touched, handleSubmit, isSubmitting }) => (
                   <Form className="w-50" onSubmit={handleSubmit}>
                     <h1 className="text-center mb-4">{t('signup.title')}</h1>
                     <div className="form-floating mb-3">
-                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="text" id="username-field" name="username" placeholder={t('signup.username')}
+                      <Field className={cn('form-control', { 'is-invalid': errors.username && touched.username })} type="text" id="username-field" name="username" placeholder={t('signup.username')}
                              innerRef={usernameInputRef}
                              value={values.username}
                       />
                       <label className="form-label" htmlFor="username-field">{t('signup.username')}</label>
+                      <div className="invalid-tooltip">{errors.username}</div>
                     </div>
                     <div className="form-floating mb-3">
-                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="password" id="password-field" name="password" placeholder={t('signup.password')}
+                      <Field className={cn('form-control', { 'is-invalid': errors.password && touched.password })} type="password" id="password-field" name="password" placeholder={t('signup.password')}
                              value={values.password}
                       />
                       <label htmlFor="password-field">{t('signup.password')}</label>
+                      <div className="invalid-tooltip">{errors.password}</div>
                     </div>
                     <div className="form-floating mb-3">
-                      <Field className={cn('form-control', { 'is-invalid': signupError })} type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder={t('signup.passwordConfirmation')}
+                      <Field className={cn('form-control', { 'is-invalid': signupError || (errors.passwordConfirmation && touched.passwordConfirmation) })} type="password" id="password-confirmation-field" name="passwordConfirmation" placeholder={t('signup.passwordConfirmation')}
                              value={values.passwordConfirmation}
                       />
                       <label htmlFor="password-confirmation-field">{t('signup.passwordConfirmation')}</label>
