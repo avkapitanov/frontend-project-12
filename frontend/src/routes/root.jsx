@@ -1,20 +1,20 @@
-import { useAuth } from '../hooks/useAuth';
-import { fetchChannels, selectChannelById } from '../slices/channelsSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useRollbar } from '@rollbar/react';
+import { animateScroll } from 'react-scroll';
+import { useAuth } from '../hooks/useAuth';
+import { fetchChannels, selectChannelById } from '../slices/channelsSlice';
 import ChannelsList from '../components/ChannelsList';
 import MessageForm from '../components/MessageForm';
 import { selectAllMessages } from '../slices/messagesSlice';
 import Message from '../components/Message';
 import ModalWrapper from '../components/ModalWrapper';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import routes from '../routes';
-import { useNavigate } from 'react-router-dom';
-import { useRollbar } from '@rollbar/react';
-import { animateScroll } from 'react-scroll';
 
-export default function Root() {
+const Root = () => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
@@ -58,15 +58,24 @@ export default function Root() {
           <ChannelsList />
           <div className="col p-0 h-100">
             <div className="d-flex flex-column h-100">
-              <div className="bg-light mb-4 p-3 shadow-sm small"><p className="m-0"><b># {channel?.name}</b></p><span
-                className="text-muted">
-                {t('chat.messageCount', { count: messagesByChannel.length })}
-              </span></div>
+              <div className="bg-light mb-4 p-3 shadow-sm small">
+                <p className="m-0">
+                  <b>
+                    #
+                    {channel?.name}
+                  </b>
+                </p>
+                <span
+                  className="text-muted"
+                >
+                  {t('chat.messageCount', { count: messagesByChannel.length })}
+                </span>
+              </div>
               <div id="messages-box" className="chat-messages overflow-auto px-5 ">
                 {messagesByChannel.map((message) => <Message message={message} key={message.id} />)}
               </div>
               <div className="mt-auto px-5 py-3">
-                <MessageForm channel={channel}/>
+                <MessageForm channel={channel} />
               </div>
             </div>
           </div>
@@ -75,4 +84,6 @@ export default function Root() {
       <ModalWrapper />
     </>
   );
-}
+};
+
+export default Root;

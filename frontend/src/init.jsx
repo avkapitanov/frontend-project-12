@@ -1,17 +1,17 @@
 import i18next from 'i18next';
-import resources from './locales/index';
 import { initReactI18next } from 'react-i18next';
 import { io } from 'socket.io-client';
+import { Provider } from 'react-redux';
+import React from 'react';
+import leoProfanity from 'leo-profanity';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import resources from './locales/index';
 import { store } from './slices/store';
 import { addMessage } from './slices/messagesSlice';
 import { actions as channelActions } from './slices/channelsSlice';
 import SocketProvider from './providers/SocketProvider';
 import App from './App';
-import { Provider } from 'react-redux';
-import React from 'react';
 import AuthProvider from './providers/AuthProvider';
-import leoProfanity from 'leo-profanity';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
   accessToken: process.env.ROLLBAR_TOKEN,

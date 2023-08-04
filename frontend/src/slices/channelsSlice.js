@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { getChannels } from '../api';
 
@@ -23,7 +25,7 @@ export const defaultChannelId = 1;
 const initialState = channelsAdapter.getInitialState({
   currentChannelId: defaultChannelId,
   loadingStatus: null,
-})
+});
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -46,10 +48,10 @@ const channelsSlice = createSlice({
     builder
       .addCase(fetchChannels.fulfilled, (state, action) => {
         const { channels, currentChannelId } = action.payload;
-        channelsAdapter.upsertMany(state, channels)
+        channelsAdapter.upsertMany(state, channels);
         state.currentChannelId = currentChannelId;
       })
-      .addCase(fetchChannels.rejected, (state, { payload}) => {
+      .addCase(fetchChannels.rejected, (state, { payload }) => {
         state.loadingStatus = (payload?.status === 401) ? 'authError' : 'networkError';
       });
   },
@@ -57,8 +59,8 @@ const channelsSlice = createSlice({
 
 export const {
   selectAll: selectAllChannels,
-  selectById: selectChannelById
-} = channelsAdapter.getSelectors(state => state.channels)
+  selectById: selectChannelById,
+} = channelsAdapter.getSelectors((state) => state.channels);
 
 export const { actions } = channelsSlice;
 export default channelsSlice.reducer;

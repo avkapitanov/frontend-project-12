@@ -1,9 +1,11 @@
+/* eslint-disable no-param-reassign */
+
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { actions as channelsActions, fetchChannels } from './channelsSlice';
 
 const messagesAdapter = createEntityAdapter();
 
-const initialState = messagesAdapter.getInitialState({})
+const initialState = messagesAdapter.getInitialState({});
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -22,14 +24,14 @@ const messagesSlice = createSlice({
       })
       .addCase(fetchChannels.fulfilled, (state, { payload }) => {
         messagesAdapter.setAll(state, payload.messages);
-      })
+      });
   },
 });
 
 export const { addMessage } = messagesSlice.actions;
 
 export const {
-  selectAll: selectAllMessages
-} = messagesAdapter.getSelectors(state => state.messages)
+  selectAll: selectAllMessages,
+} = messagesAdapter.getSelectors((state) => state.messages);
 
 export default messagesSlice.reducer;

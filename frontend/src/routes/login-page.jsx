@@ -1,14 +1,14 @@
 import { Formik, Form, Field } from 'formik';
-import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
-import loginImage from '../assets/login.jpg';
 import { useTranslation } from 'react-i18next';
-import loginSchema from '../validation/loginSchema';
 import cn from 'classnames';
+import loginImage from '../assets/login.jpg';
+import loginSchema from '../validation/loginSchema';
+import { useAuth } from '../hooks/useAuth';
 
-export default function LoginPage() {
+const LoginPage = () => {
   const { t } = useTranslation();
 
   const auth = useAuth();
@@ -56,15 +56,27 @@ export default function LoginPage() {
                 {({ values, handleSubmit, isSubmitting }) => (
                   <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
                     <div className="form-floating mb-3">
-                      <Field className={cn('form-control', { 'is-invalid': authError })} type="text" id="username-field" name="username" required placeholder={t('login.username')}
-                             innerRef={usernameInputRef}
-                             value={values.username}
+                      <Field
+                        className={cn('form-control', { 'is-invalid': authError })}
+                        type="text"
+                        id="username-field"
+                        name="username"
+                        required
+                        placeholder={t('login.username')}
+                        innerRef={usernameInputRef}
+                        value={values.username}
                       />
                       <label htmlFor="username-field">{t('login.username')}</label>
                     </div>
                     <div className="form-floating mb-3">
-                      <Field className={cn('form-control', { 'is-invalid': authError })} type="password" id="password-field" name="password" required placeholder={t('login.password')}
-                             value={values.password}
+                      <Field
+                        className={cn('form-control', { 'is-invalid': authError })}
+                        type="password"
+                        id="password-field"
+                        name="password"
+                        required
+                        placeholder={t('login.password')}
+                        value={values.password}
                       />
                       <label htmlFor="password-field">{t('login.password')}</label>
                       <div className="invalid-tooltip">{authError ? t(authError) : null}</div>
@@ -88,4 +100,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;
