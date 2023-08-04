@@ -4,7 +4,7 @@ import {
 
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,6 @@ const ModalAddChannel = ({ handleClose }) => {
   }, []);
 
   return (
-
       <div className="modal-content">
         <ModalHeader closeButton>
           <ModalTitle className="modal-title h4">
@@ -56,46 +55,38 @@ const ModalAddChannel = ({ handleClose }) => {
               }
             }}
           >
-            {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleSubmit,
-                handleBlur,
-                isSubmitting
-              }) => (
-          <Form onSubmit={handleSubmit}>
-            <Field className="mb-2 form-control"
-                   type="text"
-                   id="username-field"
-                   name="name"
-                   aria-label={t('modals.add.channelName')}
-                   placeholder={t('modals.add.enterChannelName')}
-                   onChange={handleChange}
-                   onBlur={handleBlur}
-                   value={values.name}
-                   innerRef={inputRef}
-            />
-            {errors.name && touched.name && <ErrorMessage className="text-danger" name="name" component="div" />}
+            {({ values, handleSubmit, isSubmitting }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="form-floating">
+                  <Field className="mb-2 form-control"
+                         type="text"
+                         id="channel-name-field"
+                         name="name"
+                         aria-label={t('modals.add.channelName')}
+                         placeholder={t('modals.add.enterChannelName')}
+                         value={values.name}
+                         innerRef={inputRef}
+                  />
+                  <label htmlFor="channel-name-field">{t('modals.add.channelName')}</label>
+                </div>
 
-            <div className="d-flex justify-content-end">
-              <Button
-                onClick={handleClose}
-                type="button"
-                className="me-2 btn btn-secondary"
-              >
-                {t('modals.add.cancel')}
-              </Button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting}
-              >
-                {t('modals.add.submit')}
-              </button>
-            </div>
-          </Form>
+                <div className="d-flex justify-content-end">
+                  <Button
+                    onClick={handleClose}
+                    type="button"
+                    className="me-2 btn btn-secondary"
+                  >
+                    {t('modals.add.cancel')}
+                  </Button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    {t('modals.add.submit')}
+                  </button>
+                </div>
+              </Form>
             )}
           </Formik>
         </ModalBody>

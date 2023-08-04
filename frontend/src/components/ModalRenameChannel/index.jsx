@@ -2,7 +2,7 @@ import {
   selectAllChannels, selectChannelById
 } from '../../slices/channelsSlice';
 import { useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSocket } from '../../hooks/useSocket';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import channelSchema from '../../validation/channelSchema';
+import cn from 'classnames';
 
 const ModalRenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ const ModalRenameChannel = ({ handleClose }) => {
   const channel = useSelector((state) => selectChannelById(state, channelId));
   const inputRef = useRef();
   const { renameChannel } = useSocket();
+  const [renameError, setRenameError] = useState(false);
 
   useEffect(() => {
     inputRef.current.select();
@@ -40,6 +42,7 @@ const ModalRenameChannel = ({ handleClose }) => {
           }}
           validationSchema={channelSchema(channels, t)}
           onSubmit={async (values, actions) => {
+            setRenameError(false);
             const { name } = values;
             const filteredName = leoProfanity.clean(name);
             try {
@@ -48,35 +51,30 @@ const ModalRenameChannel = ({ handleClose }) => {
               actions.setSubmitting(false);
               toast.success(t('modals.rename.channelRenamed'));
             } catch (error) {
+              setRenameError(true);
               rollbar.error('RenameChannel', error);
               toast.error(t('error.networkError'));
               actions.setSubmitting(false);
             }
           }}
+          validateOnChange={false}
+          validateOnBlur={false}
         >
-          {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleSubmit,
-              handleBlur,
-              isSubmitting
-            }) => (
+          {({ values, errors, handleSubmit, isSubmitting }) => (
             <Form onSubmit={handleSubmit}>
-              <Field className="mb-2 form-control"
-                     type="text"
-                     id="username-field"
-                     name="name"
-                     aria-label={t('modals.add.channelName')}
-                     placeholder={t('modals.add.enterChannelName')}
-                     onChange={handleChange}
-                     onBlur={handleBlur}
-                     value={values.name}
-                     innerRef={inputRef}
-              />
-              {errors.name && touched.name && <ErrorMessage className="text-danger" name="name" component="div" />}
-
+              <div className="form-floating">
+                <Field className={cn('form-control mb-2', { 'is-invalid': renameError || errors.name })}
+                       type="text"
+                       id="channel-name-field"
+                       name="name"
+                       aria-label={t('modals.add.channelName')}
+                       placeholder={t('modals.add.enterChannelName')}
+                       value={values.name}
+                       innerRef={inputRef}
+                />
+                <label htmlFor="channel-name-field">{t('modals.add.channelName')}</label>
+                <div className="invalid-tooltip">{errors.name}</div>
+              </div>
               <div className="d-flex justify-content-end">
                 <Button
                   onClick={handleClose}
