@@ -1,6 +1,6 @@
 import { Modal } from 'react-bootstrap';
-import { actions } from '../../slices/modalsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../../slices/modalsSlice';
 import ModalAddChannel from '../ModalAddChannel';
 import ModalRemoveChannel from '../ModalRemoveChannel';
 import ModalRenameChannel from '../ModalRenameChannel';

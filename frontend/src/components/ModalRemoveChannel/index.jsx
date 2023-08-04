@@ -1,10 +1,12 @@
 import { Form, Formik } from 'formik';
-import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
-import { useSocket } from '../../hooks/useSocket';
+import {
+  Button, ModalBody, ModalHeader, ModalTitle,
+} from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
+import { useSocket } from '../../hooks/useSocket';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -36,9 +38,9 @@ const ModalRemoveChannel = ({ handleClose }) => {
           }}
         >
           {({
-              handleSubmit,
-              isSubmitting
-            }) => (
+            handleSubmit,
+            isSubmitting,
+          }) => (
             <Form onSubmit={handleSubmit}>
               <p className="lead">Уверены?</p>
               <div className="d-flex justify-content-end">

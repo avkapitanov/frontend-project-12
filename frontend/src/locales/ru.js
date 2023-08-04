@@ -8,7 +8,7 @@ const ru = {
       enterMessage: 'Введите сообщение',
       message: 'Новое сообщение',
       submit: 'Отправить',
-      required: 'Сообщение обязательно'
+      required: 'Сообщение обязательно',
     },
     login: {
       title: 'Войти',
@@ -70,13 +70,13 @@ const ru = {
         title: 'Переименовать канал',
         submit: 'Переименовать',
         channelRenamed: 'Канал переименован',
-      }
+      },
     },
     error: {
       networkError: 'Ошибка соединения',
       authError: 'Ошибка авторизации',
       requiredField: 'Обязательное поле',
-    }
+    },
   },
 };
 

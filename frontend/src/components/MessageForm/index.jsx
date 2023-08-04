@@ -1,11 +1,11 @@
 import { Field, Form, Formik } from 'formik';
-import { useAuth } from '../../hooks/useAuth';
 import { useRef } from 'react';
-import { useSocket } from '../../hooks/useSocket';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
+import { useSocket } from '../../hooks/useSocket';
+import { useAuth } from '../../hooks/useAuth';
 import messageSchema from '../../validation/messageSchema';
 
 const MessageForm = ({ channel }) => {
@@ -41,19 +41,22 @@ const MessageForm = ({ channel }) => {
         inputRef.current.focus();
       }}
     >
-      {({ values, isSubmitting, dirty, isValid }) => (
+      {({
+        values, isSubmitting, dirty, isValid,
+      }) => (
         <Form noValidate="" className="py-1 border rounded-2">
           <div className="input-group has-validation">
-            <Field className="border-0 p-0 ps-2 form-control"
-                   type="text"
-                   id="username-field"
-                   name="message"
-                   aria-label={t('chat.message')}
-                   placeholder={t('chat.enterMessage')}
-                   autoComplete="off"
-                   disabled={isSubmitting}
-                   value={values.message}
-                   innerRef={inputRef}
+            <Field
+              className="border-0 p-0 ps-2 form-control"
+              type="text"
+              id="username-field"
+              name="message"
+              aria-label={t('chat.message')}
+              placeholder={t('chat.enterMessage')}
+              autoComplete="off"
+              disabled={isSubmitting}
+              value={values.message}
+              innerRef={inputRef}
             />
             <button type="submit" disabled={!dirty || !isValid} className="btn btn-group-vertical">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">

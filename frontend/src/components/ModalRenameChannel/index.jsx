@@ -1,17 +1,19 @@
-import {
-  selectAllChannels, selectChannelById
-} from '../../slices/channelsSlice';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { Button, ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
-import { useSocket } from '../../hooks/useSocket';
+import { Field, Form, Formik } from 'formik';
+import {
+  Button, ModalBody, ModalHeader, ModalTitle,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
-import channelSchema from '../../validation/channelSchema';
 import cn from 'classnames';
+import channelSchema from '../../validation/channelSchema';
+import { useSocket } from '../../hooks/useSocket';
+import {
+  selectAllChannels, selectChannelById,
+} from '../../slices/channelsSlice';
 
 const ModalRenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
@@ -60,17 +62,20 @@ const ModalRenameChannel = ({ handleClose }) => {
           validateOnChange={false}
           validateOnBlur={false}
         >
-          {({ values, errors, handleSubmit, isSubmitting }) => (
+          {({
+            values, errors, handleSubmit, isSubmitting,
+          }) => (
             <Form onSubmit={handleSubmit}>
               <div className="form-floating">
-                <Field className={cn('form-control mb-2', { 'is-invalid': renameError || errors.name })}
-                       type="text"
-                       id="channel-name-field"
-                       name="name"
-                       aria-label={t('modals.add.channelName')}
-                       placeholder={t('modals.add.enterChannelName')}
-                       value={values.name}
-                       innerRef={inputRef}
+                <Field
+                  className={cn('form-control mb-2', { 'is-invalid': renameError || errors.name })}
+                  type="text"
+                  id="channel-name-field"
+                  name="name"
+                  aria-label={t('modals.add.channelName')}
+                  placeholder={t('modals.add.enterChannelName')}
+                  value={values.name}
+                  innerRef={inputRef}
                 />
                 <label htmlFor="channel-name-field">{t('modals.add.channelName')}</label>
                 <div className="invalid-tooltip">{errors.name}</div>
