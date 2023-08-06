@@ -10,7 +10,7 @@ import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import cn from 'classnames';
 import channelSchema from '../../validation/channelSchema';
-import useSocket from '../../hooks/useSocket';
+import useSocketApi from '../../hooks/useSocketApi';
 import {
   selectAllChannels, selectChannelById,
 } from '../../slices/channelsSlice';
@@ -23,7 +23,7 @@ const ModalRenameChannel = ({ handleClose }) => {
   const channelId = useSelector((state) => state.modals.data?.channelId);
   const channel = useSelector((state) => selectChannelById(state, channelId));
   const inputRef = useRef();
-  const { renameChannel } = useSocket();
+  const api = useSocketApi();
   const [renameError, setRenameError] = useState(false);
 
   useEffect(() => {
@@ -48,8 +48,9 @@ const ModalRenameChannel = ({ handleClose }) => {
             setRenameError(false);
             const { name } = values;
             const filteredName = leoProfanity.clean(name);
+            const data = { name: filteredName, id: channelId };
             try {
-              await renameChannel(channelId, filteredName);
+              await api.renameChannel(data);
               handleClose();
               toast.success(t('modals.rename.channelRenamed'));
             } catch (error) {

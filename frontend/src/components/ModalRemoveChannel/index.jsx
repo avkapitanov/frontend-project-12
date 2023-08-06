@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
-import useSocket from '../../hooks/useSocket';
+import useSocketApi from '../../hooks/useSocketApi';
 import ButtonClose from '../ButtonClose';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
-  const { removeChannel } = useSocket();
+  const api = useSocketApi();
   const channelId = useSelector((state) => state.modals.data?.channelId);
 
   return (
@@ -27,7 +27,7 @@ const ModalRemoveChannel = ({ handleClose }) => {
           initialValues={{}}
           onSubmit={async (values, actions) => {
             try {
-              await removeChannel(channelId);
+              await api.removeChannel({ id: channelId });
               handleClose();
               actions.setSubmitting(false);
               toast.success(t('modals.remove.channelRemoved'));

@@ -9,7 +9,7 @@ import resources from './locales/index';
 import store from './slices/store';
 import { addMessage } from './slices/messagesSlice';
 import { actions as channelActions } from './slices/channelsSlice';
-import SocketProvider from './providers/SocketProvider';
+import SocketApiProvider from './providers/SocketApiProvider';
 import App from './App';
 import AuthProvider from './providers/AuthProvider';
 
@@ -55,7 +55,7 @@ const init = async () => {
 
   return (
     <Provider store={store}>
-      <SocketProvider socket={socketClient}>
+      <SocketApiProvider socket={socketClient}>
         <AuthProvider>
           <RollbarProvider config={rollbarConfig}>
             <ErrorBoundary>
@@ -63,7 +63,7 @@ const init = async () => {
             </ErrorBoundary>
           </RollbarProvider>
         </AuthProvider>
-      </SocketProvider>
+      </SocketApiProvider>
     </Provider>
   );
 };

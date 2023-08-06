@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { Field, Form, Formik } from 'formik';
 import {
@@ -8,9 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
-import useSocket from '../../hooks/useSocket';
+import useSocketApi from '../../hooks/useSocketApi';
 import {
   selectAllChannels,
+  actions as channelsActions,
 } from '../../slices/channelsSlice';
 import channelSchema from '../../validation/channelSchema';
 import ButtonClose from '../ButtonClose';
@@ -20,7 +21,8 @@ const ModalAddChannel = ({ handleClose }) => {
   const rollbar = useRollbar();
   const channels = useSelector(selectAllChannels);
   const inputRef = useRef();
-  const { addNewChannel } = useSocket();
+  const api = useSocketApi();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -46,7 +48,8 @@ const ModalAddChannel = ({ handleClose }) => {
               name: filteredName,
             };
             try {
-              await addNewChannel(channel);
+              const data = await api.addNewChannel(channel);
+              dispatch(channelsActions.addChannel(data));
               handleClose();
               toast.success(t('modals.add.channelAdded'));
             } catch (error) {

@@ -1,10 +1,10 @@
 import { Field, Form, Formik } from 'formik';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
-import useSocket from '../../hooks/useSocket';
+import useSocketApi from '../../hooks/useSocketApi';
 import useAuth from '../../hooks/useAuth';
 import messageSchema from '../../validation/messageSchema';
 
@@ -13,7 +13,11 @@ const MessageForm = ({ channel }) => {
   const rollbar = useRollbar();
   const { username } = useAuth();
   const inputRef = useRef(null);
-  const { sendMessage } = useSocket();
+  const api = useSocketApi();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [channel]);
 
   return (
     <Formik
@@ -30,7 +34,7 @@ const MessageForm = ({ channel }) => {
         };
 
         try {
-          await sendMessage(messageToSend);
+          await api.sendMessage(messageToSend);
           actions.resetForm();
         } catch (error) {
           rollbar.error('AddMessage', error);
