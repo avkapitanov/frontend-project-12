@@ -25,14 +25,10 @@ const Root = () => {
   }, [token, dispatch]);
 
   useEffect(() => {
-    if (loadingStatus === 'authError') {
+    console.error(loadingStatus);
+    if (loadingStatus === 'authError' || loadingStatus === 'networkError') {
       auth.logOut();
       navigate(routes.loginPath());
-      rollbar.error('FetchChannels', loadingStatus);
-      toast.error(t(`error.${loadingStatus}`));
-    }
-
-    if (loadingStatus === 'failed') {
       rollbar.error('FetchChannels', loadingStatus);
       toast.error(t(`error.${loadingStatus}`));
     }

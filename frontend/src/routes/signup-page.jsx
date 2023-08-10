@@ -38,7 +38,7 @@ const SignupPage = () => {
                 <img src={signupImage} className="rounded-circle" alt="" />
               </div>
               <Formik
-                initialValues={{ username: '', password: '' }}
+                initialValues={{ username: '', password: '', passwordConfirmation: '' }}
                 validationSchema={signupSchema(t)}
                 onSubmit={async ({ username, password }) => {
                   setSignupFailed(false);

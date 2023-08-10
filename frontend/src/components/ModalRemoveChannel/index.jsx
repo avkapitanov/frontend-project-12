@@ -1,6 +1,6 @@
-import { Form, Formik } from 'formik';
+import { useFormik } from 'formik';
 import {
-  ModalBody, ModalHeader, ModalTitle,
+  Form, ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,22 @@ const ModalRemoveChannel = ({ handleClose }) => {
   const api = useSocketApi();
   const channelId = useSelector((state) => state.modals.data?.channelId);
 
+  const f = useFormik({
+    initialValues: {},
+    onSubmit: async (values, actions) => {
+      try {
+        await api.removeChannel({ id: channelId });
+        handleClose();
+        actions.setSubmitting(false);
+        toast.success(t('modals.remove.channelRemoved'));
+      } catch (error) {
+        rollbar.error('RemoveChannel', error);
+        toast.error(t('error.networkError'));
+        actions.setSubmitting(false);
+      }
+    },
+  });
+
   return (
     <div className="modal-content">
       <ModalHeader closeButton>
@@ -23,40 +39,19 @@ const ModalRemoveChannel = ({ handleClose }) => {
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="modal-body">
-        <Formik
-          initialValues={{}}
-          onSubmit={async (values, actions) => {
-            try {
-              await api.removeChannel({ id: channelId });
-              handleClose();
-              actions.setSubmitting(false);
-              toast.success(t('modals.remove.channelRemoved'));
-            } catch (error) {
-              rollbar.error('RemoveChannel', error);
-              toast.error(t('error.networkError'));
-              actions.setSubmitting(false);
-            }
-          }}
-        >
-          {({
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <Form onSubmit={handleSubmit}>
-              <p className="lead">{t('modals.remove.areSure')}</p>
-              <div className="d-flex justify-content-end">
-                <ButtonClose handleClose={handleClose} text={t('modals.remove.cancel')} />
-                <button
-                  type="submit"
-                  className="btn btn-danger"
-                  disabled={isSubmitting}
-                >
-                  {t('modals.remove.submit')}
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+        <Form onSubmit={f.handleSubmit}>
+          <p className="lead">{t('modals.remove.areSure')}</p>
+          <div className="d-flex justify-content-end">
+            <ButtonClose handleClose={handleClose} text={t('modals.remove.cancel')} />
+            <button
+              type="submit"
+              className="btn btn-danger"
+              disabled={f.isSubmitting}
+            >
+              {t('modals.remove.submit')}
+            </button>
+          </div>
+        </Form>
       </ModalBody>
     </div>
   );

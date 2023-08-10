@@ -14,7 +14,7 @@ const MessagesBox = () => {
     return selectChannelById(state, currentChannelId);
   });
   const messages = useSelector(selectAllMessages);
-  const messagesByChannel = messages.filter((message) => channel.id === message.channelId);
+  const messagesByChannel = messages.filter((message) => channel?.id === message.channelId);
 
   useEffect(() => {
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });

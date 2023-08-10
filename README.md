@@ -11,6 +11,11 @@ https://hexlet-chat-03h2.onrender
 
 _____
 
+### Minimum system requirements:
+```
+Node.js 16.14.0 or higher
+```
+
 ### Build
 
 npm ci && npm run build

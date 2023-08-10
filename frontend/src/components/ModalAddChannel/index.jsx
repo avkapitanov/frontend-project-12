@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
-import { Field, Form, Formik } from 'formik';
+import { useEffect, useRef, useState } from 'react';
+import { useFormik } from 'formik';
 import {
-  ModalBody, ModalHeader, ModalTitle,
+  Form, ModalBody, ModalHeader, ModalTitle,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
+import cn from 'classnames';
 import useSocketApi from '../../hooks/useSocketApi';
 import {
   selectAllChannels,
@@ -23,10 +24,37 @@ const ModalAddChannel = ({ handleClose }) => {
   const inputRef = useRef();
   const api = useSocketApi();
   const dispatch = useDispatch();
+  const [addError, setAddError] = useState(false);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const f = useFormik({
+    initialValues: { name: '' },
+    validationSchema: channelSchema(channels, t),
+    onSubmit: async (values, actions) => {
+      setAddError(false);
+      const { name } = values;
+      const filteredName = leoProfanity.clean(name);
+      const channel = {
+        name: filteredName,
+      };
+      try {
+        const data = await api.addNewChannel(channel);
+        dispatch(channelsActions.setCurrentChannelId(data.id));
+        handleClose();
+        toast.success(t('modals.add.channelAdded'));
+      } catch (error) {
+        setAddError(true);
+        rollbar.error('AddChannel', error);
+        toast.error(t('error.networkError'));
+      }
+      actions.setSubmitting(false);
+    },
+    validateOnChange: false,
+    validateOnBlur: false,
+  });
 
   return (
     <div className="modal-content">
@@ -36,58 +64,35 @@ const ModalAddChannel = ({ handleClose }) => {
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="modal-body">
-        <Formik
-          initialValues={{
-            name: '',
-          }}
-          validationSchema={channelSchema(channels, t)}
-          onSubmit={async (values, actions) => {
-            const { name } = values;
-            const filteredName = leoProfanity.clean(name);
-            const channel = {
-              name: filteredName,
-            };
-            try {
-              const data = await api.addNewChannel(channel);
-              dispatch(channelsActions.addChannel(data));
-              handleClose();
-              toast.success(t('modals.add.channelAdded'));
-            } catch (error) {
-              rollbar.error('AddChannel', error);
-              toast.error(t('error.networkError'));
-            }
-            actions.setSubmitting(false);
-          }}
-        >
-          {({ values, handleSubmit, isSubmitting }) => (
-            <Form onSubmit={handleSubmit}>
-              <div className="form-floating">
-                <Field
-                  className="mb-2 form-control"
-                  type="text"
-                  id="channel-name-field"
-                  name="name"
-                  aria-label={t('modals.add.channelName')}
-                  placeholder={t('modals.add.enterChannelName')}
-                  value={values.name}
-                  innerRef={inputRef}
-                />
-                <label htmlFor="channel-name-field">{t('modals.add.channelName')}</label>
-              </div>
+        <Form onSubmit={f.handleSubmit}>
+          <div className="form-floating">
+            <Form.Control
+              className={cn('form-control mb-2', { 'is-invalid': addError || f.errors.name })}
+              type="text"
+              id="channel-name-field"
+              name="name"
+              onChange={f.handleChange}
+              onBlur={f.handleBlur}
+              aria-label={t('modals.add.channelName')}
+              placeholder={t('modals.add.enterChannelName')}
+              value={f.values.name}
+              ref={inputRef}
+            />
+            <label htmlFor="channel-name-field">{t('modals.add.channelName')}</label>
+            <div className="invalid-tooltip">{f.errors.name}</div>
+          </div>
 
-              <div className="d-flex justify-content-end">
-                <ButtonClose handleClose={handleClose} text={t('modals.add.cancel')} />
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {t('modals.add.submit')}
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+          <div className="d-flex justify-content-end">
+            <ButtonClose handleClose={handleClose} text={t('modals.add.cancel')} />
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={f.isSubmitting}
+            >
+              {t('modals.add.submit')}
+            </button>
+          </div>
+        </Form>
       </ModalBody>
     </div>
   );

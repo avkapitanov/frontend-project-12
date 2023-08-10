@@ -36,7 +36,6 @@ const LoginPage = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img src={loginImage} className="rounded-circle" alt="" />
               </div>
-              <h1 className="text-center mb-4">{t('login.title')}</h1>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={loginSchema(t)}
@@ -55,6 +54,7 @@ const LoginPage = () => {
               >
                 {({ values, handleSubmit, isSubmitting }) => (
                   <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
+                    <h1 className="text-center mb-4">{t('login.title')}</h1>
                     <div className="form-floating mb-3">
                       <Field
                         className={cn('form-control', { 'is-invalid': authError })}
