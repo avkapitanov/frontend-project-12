@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
-import useSocketApi from '../../hooks/useSocketApi';
-import ButtonClose from '../ButtonClose';
+import useSocketApi from '../hooks/useSocketApi';
+import ButtonClose from './ButtonClose';
 
 const ModalRemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();

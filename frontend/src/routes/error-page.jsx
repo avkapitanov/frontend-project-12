@@ -1,6 +1,7 @@
-import { useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import notfoundImage from '../assets/notfound.svg';
+import routes from '../routes';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const ErrorPage = () => {
       <p className="text-muted">
         {t('notFound.text')}
         {' '}
-        <a href="/">{t('notFound.linkText')}</a>
+        <Link to={routes.rootPath()}>{t('notFound.linkText')}</Link>
       </p>
     </div>
   );

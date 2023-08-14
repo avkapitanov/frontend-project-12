@@ -5,9 +5,9 @@ import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 import { Form } from 'react-bootstrap';
-import useSocketApi from '../../hooks/useSocketApi';
-import useAuth from '../../hooks/useAuth';
-import messageSchema from '../../validation/messageSchema';
+import useSocketApi from '../hooks/useSocketApi';
+import useAuth from '../hooks/useAuth';
+import messageSchema from '../validation/messageSchema';
 
 const MessageForm = ({ channel }) => {
   const { t } = useTranslation();

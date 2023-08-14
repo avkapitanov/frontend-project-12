@@ -9,12 +9,12 @@ import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import cn from 'classnames';
-import channelSchema from '../../validation/channelSchema';
-import useSocketApi from '../../hooks/useSocketApi';
+import channelSchema from '../validation/channelSchema';
+import useSocketApi from '../hooks/useSocketApi';
 import {
   selectAllChannels, selectChannelById,
-} from '../../slices/channelsSlice';
-import ButtonClose from '../ButtonClose';
+} from '../slices/channelsSlice';
+import ButtonClose from './ButtonClose';
 
 const ModalRenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();

@@ -14,7 +14,7 @@ import App from './App';
 import AuthProvider from './providers/AuthProvider';
 
 const rollbarConfig = {
-  accessToken: '123',
+  accessToken: process.env.ROLLBAR_TOKEN,
   environment: 'production',
   captureUncaught: true,
   captureUnhandledRejections: true,

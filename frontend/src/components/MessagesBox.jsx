@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { animateScroll } from 'react-scroll';
-import { selectChannelById } from '../../slices/channelsSlice';
-import MessageForm from '../MessageForm';
-import { selectAllMessages } from '../../slices/messagesSlice';
-import Message from '../Message';
+import { selectChannelById } from '../slices/channelsSlice';
+import MessageForm from './MessageForm';
+import { selectAllMessages } from '../slices/messagesSlice';
+import Message from './Message';
 
 const MessagesBox = () => {
   const { t } = useTranslation();

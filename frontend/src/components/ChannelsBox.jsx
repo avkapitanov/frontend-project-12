@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { animateScroll } from 'react-scroll';
-import { selectAllChannels, actions as channelActions } from '../../slices/channelsSlice';
+import { selectAllChannels, actions as channelActions } from '../slices/channelsSlice';
 
-import Channel from '../Channel';
+import Channel from './Channel';
 
 const ChannelsBox = () => {
   const dispatch = useDispatch();

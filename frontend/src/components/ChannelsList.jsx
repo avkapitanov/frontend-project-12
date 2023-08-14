@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { actions as modalsActions } from '../../slices/modalsSlice';
+import { actions as modalsActions } from '../slices/modalsSlice';
 
-import ButtonAddChannel from '../ButtonAddChannel';
-import ChannelsBox from '../ChannelsBox';
+import ButtonAddChannel from './ButtonAddChannel';
+import ChannelsBox from './ChannelsBox';
 
 const ChannelsList = () => {
   const { t } = useTranslation();

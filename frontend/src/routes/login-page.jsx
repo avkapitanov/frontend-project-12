@@ -7,6 +7,7 @@ import cn from 'classnames';
 import loginImage from '../assets/login.jpg';
 import loginSchema from '../validation/loginSchema';
 import useAuth from '../hooks/useAuth';
+import routes from '../routes';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (token) {
-      navigate('/');
+      navigate(routes.rootPath());
     }
   }, [token, navigate]);
 
@@ -40,10 +41,10 @@ const LoginPage = () => {
                 initialValues={{ username: '', password: '' }}
                 validationSchema={loginSchema(t)}
                 onSubmit={async (values) => {
-                  setAuthError(false);
+                  setAuthError('');
                   try {
                     await auth.logIn(values);
-                    navigate('/');
+                    navigate(routes.rootPath());
                   } catch ({ response }) {
                     const errMsg = (response.status === 401)
                       ? t('login.authError') : t('login.networkError');
@@ -92,7 +93,7 @@ const LoginPage = () => {
               <div className="text-center">
                 <span>{t('login.haveNotAccount')}</span>
                 {' '}
-                <Link to="/signup">{t('login.signup')}</Link>
+                <Link to={routes.signupPath()}>{t('login.signup')}</Link>
               </div>
             </div>
           </div>

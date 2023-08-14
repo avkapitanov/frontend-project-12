@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { actions as modalsActions } from '../../slices/modalsSlice';
+import { actions as modalsActions } from '../slices/modalsSlice';
 
 const Channel = ({ channel, activeChannelId, handleChoose }) => {
   const { t } = useTranslation();

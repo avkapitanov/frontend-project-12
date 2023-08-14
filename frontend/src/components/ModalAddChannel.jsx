@@ -9,13 +9,13 @@ import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
 import cn from 'classnames';
-import useSocketApi from '../../hooks/useSocketApi';
+import useSocketApi from '../hooks/useSocketApi';
 import {
   selectAllChannels,
   actions as channelsActions,
-} from '../../slices/channelsSlice';
-import channelSchema from '../../validation/channelSchema';
-import ButtonClose from '../ButtonClose';
+} from '../slices/channelsSlice';
+import channelSchema from '../validation/channelSchema';
+import ButtonClose from './ButtonClose';
 
 const ModalAddChannel = ({ handleClose }) => {
   const { t } = useTranslation();
